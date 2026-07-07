@@ -11,7 +11,7 @@ import heroSlideAsset3 from './assets/images/hero-slide-3.jpg';
 // Story timeline photos (real client photos, positions 1, 2 and 4)
 import storyPhoto1 from './assets/images/story-photo-1.jpg';
 import storyPhoto2 from './assets/images/story-photo-2.jpg';
-import storyPhoto4 from './assets/images/story-photo-4.jpg';
+import storyPhoto4 from './assets/images/story-photo-4.png';
 
 export const coupleHeroImage = coupleHeroImageAsset;
 
@@ -22,9 +22,9 @@ export const storyMilestones: StoryMilestone[] = [
   {
     id: 'm1',
     year: '2021',
-    title: 'Eyes Met in Douala',
+    title: 'Eyes Met in Buea',
     subtitle: 'Where it all began',
-    location: 'Douala, Cameroon',
+    location: 'Buea, Cameroon',
     description: 'Amidst the bustling streets of Akwa, Douala, our paths crossed at a local tech and business conference. A shared discussion on modern African design soon turned into a three-hour coffee chat. We realized we shared not just professional dreams, but the same values, laughter, and vision for the future.',
     imageUrl: storyPhoto1
   },
