@@ -52,6 +52,52 @@ export default function Header({ onOpenAdmin }: HeaderProps) {
     setLanguage(language === 'fr' ? 'en' : 'fr');
   };
 
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const checkUnread = () => {
+      const lastRead = localStorage.getItem('christian_ornella_last_read_admin_timestamp') || '0';
+      
+      let newRsvpsCount = 0;
+      const rsvpsRaw = localStorage.getItem('christian_ornella_rsvps');
+      if (rsvpsRaw) {
+        try {
+          const rsvpsParsed = JSON.parse(rsvpsRaw);
+          newRsvpsCount = rsvpsParsed.filter((r: any) => r.date && new Date(r.date).getTime() > new Date(lastRead).getTime()).length;
+        } catch (e) {}
+      }
+
+      let newPledgesCount = 0;
+      const pledgesRaw = localStorage.getItem('christian_ornella_pledges');
+      if (pledgesRaw) {
+        try {
+          const pledgesParsed = JSON.parse(pledgesRaw);
+          newPledgesCount = pledgesParsed.filter((p: any) => p.date && new Date(p.date).getTime() > new Date(lastRead).getTime()).length;
+        } catch (e) {}
+      }
+
+      setUnreadCount(newRsvpsCount + newPledgesCount);
+    };
+
+    checkUnread();
+    
+    window.addEventListener('storage', checkUnread);
+    const interval = setInterval(checkUnread, 2000);
+
+    return () => {
+      window.removeEventListener('storage', checkUnread);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const handleOpenAdminClick = () => {
+    const lastRead = localStorage.getItem('christian_ornella_last_read_admin_timestamp') || '0';
+    localStorage.setItem('christian_ornella_previous_read_admin_timestamp', lastRead);
+    localStorage.setItem('christian_ornella_last_read_admin_timestamp', new Date().toISOString());
+    setUnreadCount(0);
+    onOpenAdmin();
+  };
+
   return (
     <>
       <header
@@ -108,13 +154,18 @@ export default function Header({ onOpenAdmin }: HeaderProps) {
 
             {/* Admin Switcher Access */}
             <button
-              onClick={onOpenAdmin}
-              className={`p-1.5 rounded-full transition-all duration-300 hover:bg-gold/15 hover:text-gold cursor-pointer ${
+              onClick={handleOpenAdminClick}
+              className={`p-1.5 rounded-full transition-all duration-300 hover:bg-gold/15 hover:text-gold cursor-pointer relative ${
                 isScrolled ? 'text-charcoal' : 'text-white/90'
               }`}
               title={t.adminTitle}
             >
               <Shield className="h-4 w-4" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[8px] font-bold text-white shadow-sm ring-1 ring-white">
+                  {unreadCount}
+                </span>
+              )}
             </button>
 
             <a
@@ -145,12 +196,17 @@ export default function Header({ onOpenAdmin }: HeaderProps) {
 
             {/* Admin gear for mobile */}
             <button
-              onClick={onOpenAdmin}
-              className={`p-1 transition-all duration-300 cursor-pointer ${
+              onClick={handleOpenAdminClick}
+              className={`p-1 transition-all duration-300 cursor-pointer relative ${
                 isScrolled ? 'text-charcoal' : 'text-white'
               }`}
             >
               <Shield className="h-4 w-4" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 text-[7px] font-bold text-white ring-1 ring-white">
+                  {unreadCount}
+                </span>
+              )}
             </button>
 
             <button

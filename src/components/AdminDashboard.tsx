@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RegistryItem, GuestBlessing } from '../types';
 import { useLanguage } from '../context/LanguageContext';
-import { Shield, Gift, ClipboardList, PlusCircle, Trash2, X, Check, Save, Table, UserCheck } from 'lucide-react';
+import { Shield, Gift, ClipboardList, PlusCircle, Trash2, X, Check, Save, Table, UserCheck, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface RsvpRecord {
@@ -21,6 +21,7 @@ interface GiftPledgeRecord {
   id: string;
   senderName: string;
   email: string;
+  phone?: string;
   itemName: string;
   amount: number;
   isContribution: boolean;
@@ -45,6 +46,24 @@ export default function AdminDashboard({
   onDeleteBlessing: (id: string) => void;
 }) {
   const { language, t } = useLanguage();
+  const getWhatsAppLink = (phone: string, guestName: string, context: 'rsvp' | 'gift', itemTitle?: string) => {
+    let cleanPhone = phone.replace(/[^\d+]/g, '');
+    if (!cleanPhone.startsWith('+') && !cleanPhone.startsWith('237')) {
+      if (cleanPhone.length === 9) {
+        cleanPhone = '237' + cleanPhone;
+      }
+    } else if (cleanPhone.startsWith('+')) {
+      cleanPhone = cleanPhone.substring(1);
+    }
+    const text = context === 'rsvp'
+      ? (language === 'fr'
+          ? `Bonjour ${guestName}, nous confirmons la réception de votre RSVP pour le mariage de Christian & Ornella ! 💖`
+          : `Hello ${guestName}, we confirm receipt of your RSVP for Christian & Ornella's wedding! 💖`)
+      : (language === 'fr'
+          ? `Bonjour ${guestName}, merci infiniment pour votre magnifique cadeau : "${itemTitle}" pour le mariage de Christian & Ornella ! 🎁`
+          : `Hello ${guestName}, thank you so much for your wonderful gift: "${itemTitle}" for Christian & Ornella's wedding! 🎁`);
+    return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+  };
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
@@ -68,11 +87,15 @@ export default function AdminDashboard({
   const [newAllowCustom, setNewAllowCustom] = useState(false);
   const [addSuccess, setAddSuccess] = useState(false);
 
+  const [previousReadTimestamp, setPreviousReadTimestamp] = useState('0');
+
   // Load RSVPs and Pledges on open
   useEffect(() => {
     if (isOpen) {
       loadRsvps();
       loadPledges();
+      const prev = localStorage.getItem('christian_ornella_previous_read_admin_timestamp') || '0';
+      setPreviousReadTimestamp(prev);
     }
   }, [isOpen]);
 
@@ -333,11 +356,20 @@ export default function AdminDashboard({
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-cream/60">
-                            {rsvps.map((rsvp, idx) => (
-                              <tr key={idx} className="hover:bg-cream/10 font-sans text-charcoal">
-                                <td className="py-3 px-4">
-                                  <div className="font-bold">{rsvp.guestName}</div>
-                                  <div className="text-[10px] text-warm-gray font-light">{rsvp.email} &bull; {rsvp.phone}</div>
+                            {rsvps.map((rsvp, idx) => {
+                              const isNew = rsvp.date && new Date(rsvp.date).getTime() > new Date(previousReadTimestamp).getTime();
+                              return (
+                                <tr key={idx} className={`font-sans text-charcoal transition-all ${isNew ? 'bg-gold/10 hover:bg-gold/15' : 'hover:bg-cream/10'}`}>
+                                  <td className="py-3 px-4">
+                                    <div className="flex items-center space-x-2">
+                                      <span className="font-bold">{rsvp.guestName}</span>
+                                      {isNew && (
+                                        <span className="px-1.5 py-0.5 rounded text-[8px] bg-gold text-charcoal font-extrabold tracking-widest uppercase animate-pulse">
+                                          NEW
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="text-[10px] text-warm-gray font-light">{rsvp.email} &bull; {rsvp.phone}</div>
                                   {rsvp.note && (
                                     <div className="text-[10px] text-gold-dark italic mt-1 font-light max-w-xs truncate">
                                       "{rsvp.note}"
@@ -402,16 +434,31 @@ export default function AdminDashboard({
                                 </td>
 
                                 <td className="py-3 px-4 text-right">
-                                  <button
-                                    onClick={() => handleDeleteRsvp(idx)}
-                                    className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors cursor-pointer"
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
+                                  <div className="flex items-center justify-end space-x-1.5">
+                                    {rsvp.phone && (
+                                      <a
+                                        href={getWhatsAppLink(rsvp.phone, rsvp.guestName, 'rsvp')}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="p-1.5 text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-full transition-colors inline-block cursor-pointer"
+                                        title={language === 'fr' ? 'Contacter via WhatsApp' : 'Contact via WhatsApp'}
+                                      >
+                                        <Phone className="h-3.5 w-3.5" />
+                                      </a>
+                                    )}
+                                    <button
+                                      onClick={() => handleDeleteRsvp(idx)}
+                                      className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors cursor-pointer"
+                                      title={language === 'fr' ? 'Supprimer' : 'Delete'}
+                                    >
+                                      <Trash2 className="h-3.5 w-3.5" />
+                                    </button>
+                                  </div>
                                 </td>
                               </tr>
-                            ))}
-                          </tbody>
+                            );
+                          })}
+                        </tbody>
                         </table>
                       </div>
                     )}
@@ -433,17 +480,28 @@ export default function AdminDashboard({
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {pledges.map((pledge) => (
-                          <div
-                            key={pledge.id}
-                            className="bg-ivory border border-cream rounded-xl p-5 shadow-sm relative flex flex-col justify-between"
-                          >
-                            <button
-                              onClick={() => handleDeletePledge(pledge.id)}
-                              className="absolute top-4 right-4 text-red-300 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-red-50 cursor-pointer"
+                        {pledges.map((pledge) => {
+                          const isNew = pledge.date && new Date(pledge.date).getTime() > new Date(previousReadTimestamp).getTime();
+                          return (
+                            <div
+                              key={pledge.id}
+                              className={`bg-ivory border rounded-xl p-5 shadow-sm relative flex flex-col justify-between transition-all ${
+                                isNew ? 'border-gold bg-gold/10 ring-1 ring-gold/20 shadow-md' : 'border-cream'
+                              }`}
                             >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
+                              <div className="absolute top-4 right-4 flex items-center space-x-2">
+                                {isNew && (
+                                  <span className="px-1.5 py-0.5 rounded text-[8px] bg-gold text-charcoal font-extrabold tracking-widest uppercase animate-pulse">
+                                    NEW
+                                  </span>
+                                )}
+                                <button
+                                  onClick={() => handleDeletePledge(pledge.id)}
+                                  className="text-red-300 hover:text-red-500 transition-colors p-1 rounded-full hover:bg-red-50 cursor-pointer"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </div>
 
                             <div className="space-y-2">
                               <span className={`inline-block px-2 py-0.5 rounded text-[8px] font-bold uppercase ${
@@ -458,12 +516,28 @@ export default function AdminDashboard({
                               
                               <div className="font-sans text-xs text-warm-gray space-y-1">
                                 <p><span className="font-semibold text-charcoal">{language === 'fr' ? 'Donateur :' : 'By:'}</span> {pledge.senderName} ({pledge.email})</p>
+                                {pledge.phone && (
+                                  <p className="flex items-center space-x-1.5 flex-wrap">
+                                    <span className="font-semibold text-charcoal">{language === 'fr' ? 'WhatsApp :' : 'WhatsApp:'}</span>
+                                    <span>{pledge.phone}</span>
+                                    <a
+                                      href={getWhatsAppLink(pledge.phone, pledge.senderName, 'gift', pledge.itemName)}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="text-emerald-700 hover:text-emerald-900 transition-colors inline-flex items-center space-x-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-1.5 py-0.5 rounded text-[10px] font-bold cursor-pointer"
+                                    >
+                                      <Phone className="h-2.5 w-2.5" />
+                                      <span>WhatsApp</span>
+                                    </a>
+                                  </p>
+                                )}
                                 <p><span className="font-semibold text-charcoal">{language === 'fr' ? 'Valeur estimée :' : 'Est. Value:'}</span> ${pledge.amount}</p>
                                 <p><span className="font-semibold text-charcoal">{language === 'fr' ? 'Date de promesse :' : 'Date:'}</span> {new Date(pledge.date).toLocaleString(language === 'fr' ? 'fr-FR' : 'en-US')}</p>
                               </div>
                             </div>
                           </div>
-                        ))}
+                        );
+                      })}
                       </div>
                     )}
                   </motion.div>
@@ -533,18 +607,69 @@ export default function AdminDashboard({
                         </div>
                       </div>
 
-                      {/* Image link */}
-                      <div>
-                        <label className="block text-[10px] uppercase tracking-widest text-warm-gray font-bold mb-1">
-                          {t.adminAddItemImage}
-                        </label>
-                        <input
-                          type="url"
-                          value={newImg}
-                          onChange={(e) => setNewImg(e.target.value)}
-                          placeholder="e.g. https://images.unsplash.com/photo-..."
-                          className="w-full bg-cream border border-cream rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-gold text-charcoal"
-                        />
+                      {/* Image Source Selection */}
+                      <div className="bg-cream/40 p-4 rounded-xl border border-cream space-y-3">
+                        <div className="flex justify-between items-center mb-1">
+                          <label className="block text-[10px] uppercase tracking-widest text-warm-gray font-bold">
+                            {t.adminAddItemImage}
+                          </label>
+                          <span className="text-[9px] text-gold-dark font-semibold uppercase">{language === 'fr' ? 'Lien ou Fichier' : 'Link or File'}</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <span className="block text-[10px] text-warm-gray mb-1 font-semibold">{language === 'fr' ? 'Option A : Coller un lien d\'image' : 'Option A: Paste image URL'}</span>
+                            <input
+                              type="url"
+                              value={newImg.startsWith('data:image/') ? '' : newImg}
+                              onChange={(e) => setNewImg(e.target.value)}
+                              placeholder="e.g. https://images.unsplash.com/photo-..."
+                              className="w-full bg-ivory border border-cream rounded-lg py-2 px-3 text-xs focus:outline-none focus:border-gold text-charcoal"
+                            />
+                          </div>
+
+                          <div>
+                            <span className="block text-[10px] text-warm-gray mb-1 font-semibold">{language === 'fr' ? 'Option B : Télécharger un fichier' : 'Option B: Upload photo file'}</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onloadend = () => {
+                                    if (typeof reader.result === 'string') {
+                                      setNewImg(reader.result);
+                                    }
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }}
+                              className="w-full bg-ivory border border-cream rounded-lg py-1.5 px-3 text-xs focus:outline-none text-charcoal file:mr-3 file:py-1 file:px-2 file:rounded file:border-0 file:text-[10px] file:font-semibold file:bg-gold file:text-charcoal cursor-pointer"
+                            />
+                          </div>
+                        </div>
+
+                        {newImg && (
+                          <div className="mt-2 flex items-center space-x-3 bg-ivory p-2 rounded-lg border border-cream">
+                            <img
+                              src={newImg}
+                              alt="Preview"
+                              className="w-12 h-12 rounded object-cover border border-cream"
+                            />
+                            <div className="text-[10px] text-warm-gray truncate flex-1">
+                              <span className="font-bold text-charcoal block">{language === 'fr' ? 'Image sélectionnée :' : 'Selected Image:'}</span>
+                              {newImg.startsWith('data:image/') ? 'Direct file upload (Base64)' : newImg}
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => setNewImg('')}
+                              className="text-red-500 hover:text-red-700 font-bold text-[10px] uppercase tracking-wider px-2 py-1 rounded hover:bg-red-50"
+                            >
+                              {language === 'fr' ? 'Effacer' : 'Clear'}
+                            </button>
+                          </div>
+                        )}
                       </div>
 
                       {/* Description */}

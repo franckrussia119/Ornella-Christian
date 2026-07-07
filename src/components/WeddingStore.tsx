@@ -20,6 +20,7 @@ export default function WeddingStore({
   // Form states for Blessing & Gift Pledge
   const [senderName, setSenderName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [relationship, setRelationship] = useState<'Family' | 'Friend' | 'Colleague' | 'Well-wisher'>('Family');
   const [blessingMessage, setBlessingMessage] = useState('');
   const [cardDesign, setCardDesign] = useState<'Gold-Filigree' | 'Rose-Petals' | 'Cameroon-Emerald' | 'Ivory-Classic'>('Gold-Filigree');
@@ -51,6 +52,7 @@ export default function WeddingStore({
     setContributionAmount(item.targetAmount ? Math.min(250, item.targetAmount - (item.raisedAmount || 0)).toString() : item.price.toString());
     setSenderName('');
     setEmail('');
+    setPhone('');
     setBlessingMessage('');
     setShowSuccess(false);
   };
@@ -61,8 +63,10 @@ export default function WeddingStore({
 
   const handleSubmitPledge = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!senderName || !email || !blessingMessage) {
-      alert(language === 'fr' ? 'Veuillez remplir tous les champs obligatoires.' : 'Please fill out all required fields.');
+    if (!senderName || !email || !phone || !blessingMessage) {
+      alert(language === 'fr' 
+        ? 'Veuillez remplir tous les champs obligatoires (Nom, Email, WhatsApp, et Message).' 
+        : 'Please fill out all required fields (Name, Email, WhatsApp, and Message).');
       return;
     }
 
@@ -104,6 +108,7 @@ export default function WeddingStore({
           id: `pledge_${Date.now()}`,
           senderName,
           email,
+          phone, // Storing WhatsApp phone number
           itemName: activeGiftItem.title,
           amount: activeGiftItem.targetAmount ? parseFloat(contributionAmount) : activeGiftItem.price,
           isContribution: !!activeGiftItem.targetAmount,
@@ -387,7 +392,7 @@ export default function WeddingStore({
                     )}
 
                     {/* Basic Info Split */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <label className="block text-[10px] uppercase tracking-widest text-warm-gray font-bold mb-1">
                           {t.formLabelName} *
@@ -411,6 +416,19 @@ export default function WeddingStore({
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="e.g. robert@gmail.com"
+                          className="w-full bg-ivory border border-cream rounded-lg py-2.5 px-3.5 text-sm focus:outline-none focus:border-gold text-charcoal"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] uppercase tracking-widest text-warm-gray font-bold mb-1">
+                          {language === 'fr' ? 'Numéro WhatsApp *' : 'WhatsApp Number *'}
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          placeholder="e.g. +237 6XX XX XX XX"
                           className="w-full bg-ivory border border-cream rounded-lg py-2.5 px-3.5 text-sm focus:outline-none focus:border-gold text-charcoal"
                         />
                       </div>

@@ -8,6 +8,11 @@ import heroSlideAsset1 from './assets/images/hero-slide-1.jpg';
 import heroSlideAsset2 from './assets/images/hero-slide-2.jpg';
 import heroSlideAsset3 from './assets/images/hero-slide-3.jpg';
 
+// Story timeline photos (real client photos, positions 1, 2 and 4)
+import storyPhoto1 from './assets/images/story-photo-1.jpg';
+import storyPhoto2 from './assets/images/story-photo-2.jpg';
+import storyPhoto4 from './assets/images/story-photo-4.jpg';
+
 export const coupleHeroImage = coupleHeroImageAsset;
 
 // Hero background slideshow — cycles through these on the front page
@@ -21,7 +26,7 @@ export const storyMilestones: StoryMilestone[] = [
     subtitle: 'Where it all began',
     location: 'Douala, Cameroon',
     description: 'Amidst the bustling streets of Akwa, Douala, our paths crossed at a local tech and business conference. A shared discussion on modern African design soon turned into a three-hour coffee chat. We realized we shared not just professional dreams, but the same values, laughter, and vision for the future.',
-    imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'
+    imageUrl: storyPhoto1
   },
   {
     id: 'm2',
@@ -30,7 +35,7 @@ export const storyMilestones: StoryMilestone[] = [
     subtitle: 'Falling in love by the black sands',
     location: 'Limbé Beach, Cameroon',
     description: 'Our first real trip together to Limbé, walking along the volcanic black sands with the fresh Atlantic breeze. Watching the sunset with Mount Cameroon behind us, we realized this was more than just a passing spark—we had found our absolute home in one another.',
-    imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
+    imageUrl: storyPhoto2
   },
   {
     id: 'm3',
@@ -48,7 +53,7 @@ export const storyMilestones: StoryMilestone[] = [
     subtitle: 'An elegant union of our families',
     location: 'Yaoundé, Cameroon',
     description: 'Surrounded by the warmth of our elders, our families gathered in Yaoundé for our Traditional Customary Wedding. Embracing our rich heritage, we wore exquisite golden Toghu attire. The blessings, exchange of symbolic gifts, and traditional negotiation bound our lineages together in beautiful harmony.',
-    imageUrl: 'https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?auto=format&fit=crop&w=800&q=80'
+    imageUrl: storyPhoto4
   }
 ];
 

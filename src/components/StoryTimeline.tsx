@@ -2,6 +2,9 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Heart, MapPin } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import storyPhoto1 from '../assets/images/story-photo-1.jpg';
+import storyPhoto2 from '../assets/images/story-photo-2.jpg';
+import storyPhoto4 from '../assets/images/story-photo-4.jpg';
 
 export default function StoryTimeline() {
   const { language, t } = useLanguage();
@@ -16,7 +19,7 @@ export default function StoryTimeline() {
       description: language === 'fr'
         ? "Au milieu des rues animées d'Akwa, à Douala, nos chemins se sont croisés lors d'une conférence locale sur la technologie et l'entrepreneuriat. Une simple discussion sur le design moderne en Afrique s'est rapidement transformée en une conversation de trois heures autour d'un café. Nous avons compris que nous partagions bien plus que des rêves professionnels : les mêmes valeurs, le même humour et une vision commune de l'avenir."
         : 'Amidst the bustling streets of Akwa, Douala, our paths crossed at a local tech and business conference. A shared discussion on modern African design soon turned into a three-hour coffee chat. We realized we shared not just professional dreams, but the same values, laughter, and vision for the future.',
-      imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80'
+      imageUrl: storyPhoto1
     },
     {
       id: 'm2',
@@ -27,7 +30,7 @@ export default function StoryTimeline() {
       description: language === 'fr'
         ? "Notre tout premier voyage ensemble à Limbé, marchant le long des plages de sable noir volcanique sous la brise fraîche de l'Atlantique. En regardant le coucher du soleil avec le Mont Cameroun en arrière-plan, nous avons réalisé que ce n'était pas un simple feu de paille—nous avions trouvé notre véritable foyer l'un chez l'autre."
         : 'Our first real trip together to Limbé, walking along the volcanic black sands with the fresh Atlantic breeze. Watching the sunset with Mount Cameroon behind us, we realized this was more than just a passing spark—we had found our absolute home in one another.',
-      imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
+      imageUrl: storyPhoto2
     },
     {
       id: 'm3',
@@ -49,7 +52,7 @@ export default function StoryTimeline() {
       description: language === 'fr'
         ? "Entourés de la chaleur de nos aînés, nos familles se sont réunies à Yaoundé pour notre mariage coutumier traditionnel. En l'honneur de notre riche héritage culturel, nous portions de somptueuses tenues dorées en Toghu. Les bénédictions, les échanges de présents symboliques et les négociations traditionnelles ont scellé l'union de nos deux lignées en parfaite harmonie."
         : 'Surrounded by the warmth of our elders, our families gathered in Yaoundé for our Traditional Customary Wedding. Embracing our rich heritage, we wore exquisite golden Toghu attire. The blessings, exchange of symbolic gifts, and traditional negotiation bound our lineages together in beautiful harmony.',
-      imageUrl: 'https://images.unsplash.com/photo-1607190074257-dd4b7af0309f?auto=format&fit=crop&w=800&q=80'
+      imageUrl: storyPhoto4
     }
   ];
 
