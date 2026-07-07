@@ -1,0 +1,6 @@
+{
+  "name": "Christian & Ornella Wedding",
+  "description": "The official wedding celebration portal, registry store, and blessings guestbook of Christian & Ornella in Cameroon.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

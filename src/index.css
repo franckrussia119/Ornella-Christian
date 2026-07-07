@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Great+Vibes&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-script: "Great Vibes", cursive;
+  
+  --color-ivory: #FCFBFA;
+  --color-cream: #F7F4EE;
+  --color-blush: #F5E6E3;
+  --color-blush-dark: #E8D0CB;
+  --color-gold: #C5A880;
+  --color-gold-dark: #B19269;
+  --color-charcoal: #2C2A29;
+  --color-warm-gray: #7A7672;
+}
+
+/* Custom styles for masonry and scrollbar styling */
+::selection {
+  background-color: var(--color-blush);
+  color: var(--color-charcoal);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar for carousel but allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
