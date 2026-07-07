@@ -1,7 +1,7 @@
 import { StoryMilestone, RegistryItem, GuestBlessing, CeremonyEvent, FAQItem } from './types';
 
 // Relative path to generated romantic Cameroonian couple portrait
-export const coupleHeroImage = '/src/assets/images/christian_ornella_wedding_1783429710497.jpg';
+export const coupleHeroImage = '/src/assets/images/Picture 1.png';
 
 export const storyMilestones: StoryMilestone[] = [
   {
