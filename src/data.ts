@@ -1,7 +1,17 @@
 import { StoryMilestone, RegistryItem, GuestBlessing, CeremonyEvent, FAQItem } from './types';
 
-// Relative path to generated romantic Cameroonian couple portrait
-export const coupleHeroImage = '/src/assets/images/Picture 1.png';
+// Real couple photos — imported (not string paths) so Vite bundles and
+// hashes them correctly into the production build. A plain string path
+// like '/src/assets/...' only works in dev and breaks after `vite build`.
+import coupleHeroImageAsset from './assets/images/christian_ornella_wedding_1783429710497.jpg';
+import heroSlideAsset1 from './assets/images/hero-slide-1.jpg';
+import heroSlideAsset2 from './assets/images/hero-slide-2.jpg';
+import heroSlideAsset3 from './assets/images/hero-slide-3.jpg';
+
+export const coupleHeroImage = coupleHeroImageAsset;
+
+// Hero background slideshow — cycles through these on the front page
+export const heroSlides: string[] = [heroSlideAsset1, heroSlideAsset2, heroSlideAsset3];
 
 export const storyMilestones: StoryMilestone[] = [
   {

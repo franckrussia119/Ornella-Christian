@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Calendar, MapPin, Gift } from 'lucide-react';
-import { coupleHeroImage } from '../data';
-import { motion } from 'motion/react';
+import { heroSlides } from '../data';
+import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Hero() {
@@ -13,6 +13,16 @@ export default function Hero() {
     minutes: 0,
     seconds: 0,
   });
+
+  // ---- Hero background slideshow ----
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    const slideTimer = setInterval(() => {
+      setSlideIndex((prev) => (prev + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(slideTimer);
+  }, []);
 
   useEffect(() => {
     // Target Date: December 11, 2026 at 2:00 PM (Start of traditional rites)
@@ -55,14 +65,35 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative h-screen w-full overflow-hidden bg-charcoal flex items-center justify-center">
-      {/* Background Image with elegant overlay */}
+      {/* Background Image Slideshow with elegant overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-charcoal/45 via-charcoal/25 to-charcoal/80 z-10" />
-      <img
-        src={coupleHeroImage}
-        alt="Christian and Ornella Wedding"
-        className="absolute inset-0 w-full h-full object-cover object-center"
-        referrerPolicy="no-referrer"
-      />
+      <AnimatePresence mode="sync">
+        <motion.img
+          key={slideIndex}
+          src={heroSlides[slideIndex]}
+          alt="Christian and Ornella Wedding"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: 'easeInOut' }}
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          referrerPolicy="no-referrer"
+        />
+      </AnimatePresence>
+
+      {/* Slideshow dot navigation */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center space-x-2">
+        {heroSlides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setSlideIndex(i)}
+            aria-label={`Show slide ${i + 1}`}
+            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+              i === slideIndex ? 'w-6 bg-gold' : 'w-1.5 bg-ivory/50 hover:bg-ivory/80'
+            }`}
+          />
+        ))}
+      </div>
 
       {/* Hero Interactive Content */}
       <div className="relative z-20 text-center px-6 md:px-12 max-w-4xl flex flex-col items-center mt-12">
