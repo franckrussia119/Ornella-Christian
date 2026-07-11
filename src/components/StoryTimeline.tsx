@@ -12,46 +12,46 @@ export default function StoryTimeline() {
   const localMilestones = [
     {
       id: 'm1',
-      year: '2021',
-      title: language === 'fr' ? 'Rencontre fortuite à Douala' : 'Eyes Met in Douala',
+      year: '2018',
+      title: language === 'fr' ? 'Deux étudiants, un même campus' : 'Two Students, One Campus',
       subtitle: language === 'fr' ? 'Là où tout a commencé' : 'Where it all began',
-      location: language === 'fr' ? 'Douala, Cameroun' : 'Douala, Cameroon',
+      location: language === 'fr' ? "Université de Buea, Cameroun" : 'University of Buea, Cameroon',
       description: language === 'fr'
-        ? "Au milieu des rues animées d'Akwa, à Douala, nos chemins se sont croisés lors d'une conférence locale sur la technologie et l'entrepreneuriat. Une simple discussion sur le design moderne en Afrique s'est rapidement transformée en une conversation de trois heures autour d'un café. Nous avons compris que nous partagions bien plus que des rêves professionnels : les mêmes valeurs, le même humour et une vision commune de l'avenir."
-        : 'Amidst the bustling streets of Akwa, Douala, our paths crossed at a local tech and business conference. A shared discussion on modern African design soon turned into a three-hour coffee chat. We realized we shared not just professional dreams, but the same values, laughter, and vision for the future.',
+        ? "Nous étions tous deux étudiants à l'Université de Buea, nos chemins se croisant entre les amphithéâtres et les allées du campus bien avant que l'un de nous n'ose dire plus qu'un simple bonjour. Ce qui n'était au début que des visages familiers dans la foule est devenu, sans que nous nous en rendions compte, une amitié qu'aucun de nous ne voulait voir s'arrêter."
+        : 'We were both students at the University of Buea, our paths crossing between lecture halls and campus footpaths long before either of us had the courage to say much more than hello. What started as familiar faces in a crowd slowly became a friendship neither of us saw coming — and neither of us wanted to end.',
       imageUrl: storyPhoto1
     },
     {
       id: 'm2',
-      year: '2022',
-      title: language === 'fr' ? 'Première escapade à Limbé' : 'First Escape to Limbé',
-      subtitle: language === 'fr' ? "L'amour au rythme des vagues" : 'Falling in love by the black sands',
-      location: language === 'fr' ? 'Limbé, Cameroun' : 'Limbé Beach, Cameroon',
+      year: '2019',
+      title: language === 'fr' ? 'Le même banc d\'église' : 'The Same Pew',
+      subtitle: language === 'fr' ? "Découvrir que nous appartenions à la même famille de foi" : 'Discovering we belonged to the same family of faith',
+      location: language === 'fr' ? 'EEC Paroisse de Buea, Cameroun' : 'EEC Paroisse de Buea, Cameroon',
       description: language === 'fr'
-        ? "Notre tout premier voyage ensemble à Limbé, marchant le long des plages de sable noir volcanique sous la brise fraîche de l'Atlantique. En regardant le coucher du soleil avec le Mont Cameroun en arrière-plan, nous avons réalisé que ce n'était pas un simple feu de paille—nous avions trouvé notre véritable foyer l'un chez l'autre."
-        : 'Our first real trip together to Limbé, walking along the volcanic black sands with the fresh Atlantic breeze. Watching the sunset with Mount Cameroon behind us, we realized this was more than just a passing spark—we had found our absolute home in one another.',
+        ? "C'est à l'EEC Paroisse de Buea que nous avons réalisé que nous adorions sous le même toit depuis le début. Dimanche après dimanche, notre amitié s'est approfondie dans les bancs de l'église et au-delà, ancrée dans une foi commune qui allait bientôt devenir le fondement de tout ce que nous allions construire ensemble."
+        : "It was at EEC Paroisse de Buea that we realized we had been worshipping under the same roof all along. Sunday after Sunday, our friendship deepened in the pews and beyond them, grounded in a shared faith that would soon become the foundation of everything we'd build together.",
       imageUrl: storyPhoto2
     },
     {
       id: 'm3',
-      year: '2024',
-      title: language === 'fr' ? 'La demande à Kribi' : 'The Kribi Proposal',
-      subtitle: language === 'fr' ? "Un 'Oui' pour toujours aux chutes de la Lobé" : 'Yes to Forever by the Chutes de la Lobé',
-      location: language === 'fr' ? 'Kribi, Cameroun' : 'Kribi, Cameroon',
+      year: '2022',
+      title: language === 'fr' ? 'Unis dans la communion fraternelle' : 'Bound in Fellowship',
+      subtitle: language === 'fr' ? "Là où l'amitié est devenue pour toujours" : 'Where friendship became forever',
+      location: language === 'fr' ? 'UCJG, Buea, Cameroun' : 'UCJG, Buea, Cameroon',
       description: language === 'fr'
-        ? "Lors d'un week-end romantique dans le paradis balnéaire de Kribi, Christian a planifié une promenade surprise en pirogue au coucher du soleil près des chutes de la Lobé. Là où le fleuve se jette dans l'océan, il s'est agenouillé. Avec le grondement des cascades et le 'Oui' ému d'Ornella, notre chemin vers le mariage était tracé."
-        : 'During a weekend getaway to the seaside paradise of Kribi, Christian planned a surprise sunset canoe ride near the Lobé Waterfalls. Standing where the river meets the ocean, he got down on one knee. With the sound of cascading waters and Ornella’s tearful "Oui!", our road to marriage was sealed.',
+        ? "Au sein de l'UCJG, le groupe de jeunesse chrétien de notre église, nous nous sommes retrouvés à servir côte à côte — dans le culte, dans la prière, dans le travail discret de bâtir une communauté de jeunes croyants. C'est ici, entourés de ceux qui nous avaient vus grandir, que notre histoire est passée de l'amitié à une promesse pour la vie."
+        : "Through UCJG, our church's Christian youth fellowship, we found ourselves serving side by side — in worship, in prayer, in the quiet work of building a community of young believers. It was here, surrounded by the people who had watched us grow, that our story turned from friendship into a promise for life.",
       imageUrl: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80'
     },
     {
       id: 'm4',
-      year: language === 'fr' ? 'Fév 2026' : 'Feb 2026',
-      title: language === 'fr' ? 'La Dotation (Mariage Coutumier)' : 'La Dotation (Traditional Rites)',
+      year: '2026',
+      title: language === 'fr' ? 'Direction Baham' : 'Looking Toward Baham',
       subtitle: language === 'fr' ? "L'alliance royale de nos deux familles" : 'An elegant union of our families',
-      location: language === 'fr' ? 'Yaoundé, Cameroun' : 'Yaoundé, Cameroon',
+      location: language === 'fr' ? 'Baham, Cameroun' : 'Baham, Cameroon',
       description: language === 'fr'
-        ? "Entourés de la chaleur de nos aînés, nos familles se sont réunies à Yaoundé pour notre mariage coutumier traditionnel. En l'honneur de notre riche héritage culturel, nous portions de somptueuses tenues dorées en Toghu. Les bénédictions, les échanges de présents symboliques et les négociations traditionnelles ont scellé l'union de nos deux lignées en parfaite harmonie."
-        : 'Surrounded by the warmth of our elders, our families gathered in Yaoundé for our Traditional Customary Wedding. Embracing our rich heritage, we wore exquisite golden Toghu attire. The blessings, exchange of symbolic gifts, and traditional negotiation bound our lineages together in beautiful harmony.',
+        ? "Aujourd'hui, nos familles se préparent à se réunir à Baham, au cœur du pays bamiléké, pour notre mariage coutumier traditionnel. En l'honneur de notre riche héritage culturel, nous porterons de somptueuses tenues dorées en Toghu. Les bénédictions, les échanges de présents symboliques et les négociations traditionnelles scelleront l'union de nos deux lignées en parfaite harmonie."
+        : "Now, our families prepare to gather in Baham, in the heart of Bamileke country, for our Traditional Customary Wedding. Embracing our rich heritage, we will wear exquisite golden Toghu attire as blessings, symbolic gifts, and traditional negotiation bind our lineages together in beautiful harmony.",
       imageUrl: storyPhoto4
     }
   ];

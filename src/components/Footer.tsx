@@ -60,15 +60,15 @@ export default function Footer() {
           <div className="flex items-center space-x-2">
             <Heart className="h-4.5 w-4.5 text-gold fill-gold" />
             <span className="font-serif text-xl tracking-[0.25em] font-bold text-white uppercase">
-              C <span className="font-script text-2xl lowercase font-normal text-gold -mx-0.5">and</span> O
+              D <span className="font-script text-2xl lowercase font-normal text-gold -mx-0.5">and</span> J
             </span>
           </div>
           <p className="font-sans text-xs sm:text-sm text-ivory/60 leading-relaxed font-light max-w-sm">
-            We are incredibly blessed to walk this beautiful journey of customary rites in Yaoundé and ecclesiastical vows in Douala. Thank you for your endless prayers, support, and blessings on our household.
+            We are incredibly blessed to walk this beautiful journey of customary rites in Baham and civil &amp; religious vows in Nkongsamba. Thank you for your endless prayers, support, and blessings on our household.
           </p>
           <div className="flex flex-col space-y-1 text-xs font-sans text-gold">
-            <span>&bull; Yaoundé, Cameroon &mdash; Bastos Estate</span>
-            <span>&bull; Douala, Cameroon &mdash; Crystal Palace Gardens</span>
+            <span>&bull; Baham, West Region, Cameroon</span>
+            <span>&bull; Nkongsamba, Littoral Region, Cameroon</span>
           </div>
         </div>
 
@@ -146,7 +146,7 @@ export default function Footer() {
       {/* Signature and copyright details */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 flex flex-col md:flex-row items-center justify-between text-[10px] uppercase tracking-widest text-white/40 font-sans font-semibold space-y-4 md:space-y-0">
         <div className="flex flex-col md:flex-row md:items-center space-y-1 md:space-y-0 md:space-x-2 text-center md:text-left">
-          <span>&copy; 2026 Christian &amp; Ornella Wedding Portal.</span>
+          <span>&copy; 2026 De l'Ange &amp; Joverlin Wedding Portal.</span>
           <span className="hidden md:inline">&bull;</span>
           <span>All rights reserved.</span>
         </div>

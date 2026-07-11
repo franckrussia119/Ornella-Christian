@@ -21,38 +21,38 @@ export const heroSlides: string[] = [heroSlideAsset1, heroSlideAsset2, heroSlide
 export const storyMilestones: StoryMilestone[] = [
   {
     id: 'm1',
-    year: '2021',
-    title: 'Eyes Met in Douala',
+    year: '2018',
+    title: 'Two Students, One Campus',
     subtitle: 'Where it all began',
-    location: 'Douala, Cameroon',
-    description: 'Amidst the bustling streets of Akwa, Douala, our paths crossed at a local tech and business conference. A shared discussion on modern African design soon turned into a three-hour coffee chat. We realized we shared not just professional dreams, but the same values, laughter, and vision for the future.',
+    location: 'University of Buea, Cameroon',
+    description: 'We were both students at the University of Buea, our paths crossing between lecture halls and campus footpaths long before either of us had the courage to say much more than hello. What started as familiar faces in a crowd slowly became a friendship neither of us saw coming — and neither of us wanted to end.',
     imageUrl: storyPhoto1
   },
   {
     id: 'm2',
-    year: '2022',
-    title: 'First Escape to Limbé',
-    subtitle: 'Falling in love by the black sands',
-    location: 'Limbé Beach, Cameroon',
-    description: 'Our first real trip together to Limbé, walking along the volcanic black sands with the fresh Atlantic breeze. Watching the sunset with Mount Cameroon behind us, we realized this was more than just a passing spark—we had found our absolute home in one another.',
+    year: '2019',
+    title: 'The Same Pew',
+    subtitle: 'Discovering we belonged to the same family of faith',
+    location: 'EEC Paroisse de Buea, Cameroon',
+    description: 'It was at EEC Paroisse de Buea that we realized we had been worshipping under the same roof all along. Sunday after Sunday, our friendship deepened in the pews and beyond them, grounded in a shared faith that would soon become the foundation of everything we\'d build together.',
     imageUrl: storyPhoto2
   },
   {
     id: 'm3',
-    year: '2024',
-    title: 'The Kribi Proposal',
-    subtitle: 'Yes to Forever by the Chutes de la Lobé',
-    location: 'Kribi, Cameroon',
-    description: 'During a weekend getaway to the seaside paradise of Kribi, Christian planned a surprise sunset canoe ride near the Lobé Waterfalls. Standing where the river meets the ocean, he got down on one knee. With the sound of cascading waters and Ornella’s tearful "Oui!", our road to marriage was sealed.',
+    year: '2022',
+    title: 'Bound in Fellowship',
+    subtitle: 'Where friendship became forever',
+    location: 'UCJG, Buea, Cameroon',
+    description: 'Through UCJG, our church\'s Christian youth fellowship, we found ourselves serving side by side — in worship, in prayer, in the quiet work of building a community of young believers. It was here, surrounded by the people who had watched us grow, that our story turned from friendship into a promise for life.',
     imageUrl: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80'
   },
   {
     id: 'm4',
-    year: 'Feb 2026',
-    title: 'La Dotation (Traditional Rites)',
+    year: '2026',
+    title: 'Looking Toward Baham',
     subtitle: 'An elegant union of our families',
-    location: 'Yaoundé, Cameroon',
-    description: 'Surrounded by the warmth of our elders, our families gathered in Yaoundé for our Traditional Customary Wedding. Embracing our rich heritage, we wore exquisite golden Toghu attire. The blessings, exchange of symbolic gifts, and traditional negotiation bound our lineages together in beautiful harmony.',
+    location: 'Baham, Cameroon',
+    description: 'Now, our families prepare to gather in Baham, in the heart of Bamileke country, for our Traditional Customary Wedding. Embracing our rich heritage, we will wear exquisite golden Toghu attire as blessings, symbolic gifts, and traditional negotiation bind our lineages together in beautiful harmony.',
     imageUrl: storyPhoto4
   }
 ];
@@ -151,7 +151,7 @@ export const initialBlessings: GuestBlessing[] = [
     senderName: 'Tante Marie-Claire',
     email: 'mclaire@yahoo.fr',
     relationship: 'Family',
-    message: 'Mon fils Christian et ma fille Ornella, que Dieu déverse sa grâce infinie sur votre foyer. Que votre amour soit fort comme le Mont Cameroun et doux comme l’eau de Kribi. Nous sommes tellement fiers de votre union magnifique ! Félicitations !',
+    message: 'Mon fils Joverlin et ma fille De l’Ange, que Dieu déverse sa grâce infinie sur votre foyer. Que votre amour soit fort comme le Mont Cameroun et doux comme l’eau de Kribi. Nous sommes tellement fiers de votre union magnifique ! Félicitations !',
     date: '2026-07-06T14:30:00Z',
     cardDesign: 'Gold-Filigree',
     pledgedItemTitle: 'Traditional Toghu Handcrafted Living Room Suite'
@@ -161,7 +161,7 @@ export const initialBlessings: GuestBlessing[] = [
     senderName: 'Marc-Aurèle Ndi',
     email: 'm.ndi@gmail.com',
     relationship: 'Friend',
-    message: 'Bro! Christian, to see you marry your queen Ornella is an absolute dream. You guys are the perfect match. Looking forward to celebrating with all the guys in Douala in December. Traditional custom and white wedding will be fire! Blessings on your household.',
+    message: 'Bro! Joverlin, to see you marry your queen De l\'Ange is an absolute dream. You guys are the perfect match. Looking forward to celebrating with all the guys in Nkongsamba this August. Traditional custom and civil/religious wedding will be fire! Blessings on your household.',
     date: '2026-07-06T19:45:00Z',
     cardDesign: 'Cameroon-Emerald'
   },
@@ -170,7 +170,7 @@ export const initialBlessings: GuestBlessing[] = [
     senderName: 'Grace & Jean-Paul Kamdem',
     email: 'kamdems@outlook.com',
     relationship: 'Colleague',
-    message: 'Ornella and Christian, congratulations on this beautiful step! It has been wonderful watching your journey grow from that conference in Douala. Wishing you a lifetime of laughter, prosperity, and endless blessings. You are a gorgeous couple.',
+    message: 'De l\'Ange and Joverlin, congratulations on this beautiful step! It has been wonderful watching your journey grow since your days together at the University of Buea. Wishing you a lifetime of laughter, prosperity, and endless blessings. You are a gorgeous couple.',
     date: '2026-07-07T02:15:00Z',
     cardDesign: 'Rose-Petals',
     pledgedItemTitle: 'Dream Honeymoon in Kribi Resort'
@@ -180,7 +180,7 @@ export const initialBlessings: GuestBlessing[] = [
     senderName: 'Maman Thérèse',
     email: 'therese.yde@hotmail.fr',
     relationship: 'Family',
-    message: 'Toutes mes bénédictions les plus chaleureuses à mes enfants. Que la patience, la joie et la paix soient le ciment de votre foyer. Yaoundé et Douala célèbrent ce mariage béni. Amen !',
+    message: 'Toutes mes bénédictions les plus chaleureuses à mes enfants. Que la patience, la joie et la paix soient le ciment de votre foyer. Baham et Nkongsamba célèbrent ce mariage béni. Amen !',
     date: '2026-07-07T05:00:00Z',
     cardDesign: 'Ivory-Classic'
   }
@@ -190,23 +190,23 @@ export const ceremonyEvents: CeremonyEvent[] = [
   {
     id: 'c1',
     title: 'Traditional Marriage Rites (La Dotation)',
-    date: 'Friday, December 11, 2026',
+    date: 'Saturday, August 8, 2026',
     time: '2:00 PM - 8:00 PM',
-    venueName: 'The Mbanga Family Estate',
-    address: 'Quartier Bastos, Yaoundé, Cameroon',
-    description: 'The formal traditional customary wedding ceremony where our two families unite according to traditional Cameroon customs. It will feature customary rites, negotiation presentations, tribal blessings, traditional music, and an exquisite Cameroonian buffet feast.',
+    venueName: '{{Venue Name — to be confirmed}}',
+    address: 'Baham, West Region, Cameroon',
+    description: 'The formal traditional customary wedding ceremony where our two families unite according to traditional Cameroon customs, held in the heart of the Bamileke chiefdom of Baham. It will feature customary rites, negotiation presentations, tribal blessings, traditional music, and an exquisite Cameroonian buffet feast.',
     imageUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80',
     dressCode: 'Royal Cameroonian Traditional Elegance',
     dressCodeDescription: 'Guests are warmly encouraged to wear traditional Cameroonian attire. Bold, gorgeous Toghu (North-West), Ndop (West), Kaba Ngondo (Sawa/Littoral), or custom African wax prints with touch of gold are highly recommended.'
   },
   {
     id: 'c2',
-    title: 'The White Wedding Ceremony & Grand Reception',
-    date: 'Saturday, December 12, 2026',
+    title: 'The Civil & Religious Wedding & Grand Reception',
+    date: 'Saturday, August 15, 2026',
     time: '1:00 PM - 11:00 PM',
-    venueName: 'Cathédrale Saint-Pierre-et-Saint-Paul & Crystal Palace Gardens',
-    address: 'Boulevard de la Liberté, Douala, Cameroon',
-    description: 'The religious wedding blessing, exchange of vows, and official civil signing, followed by an opulent, elegant evening banquet reception with non-stop dancing, wedding toasts, and majestic celebrations at the Crystal Palace Gardens in Bonapriso.',
+    venueName: '{{Church / Reception Venue — to be confirmed}}',
+    address: 'Nkongsamba, Littoral Region, Cameroon',
+    description: 'The religious wedding blessing, exchange of vows, and official civil signing of our union in Nkongsamba, followed by an opulent, elegant evening banquet reception with non-stop dancing, wedding toasts, and majestic celebrations.',
     imageUrl: coupleHeroImage, // Beautifully showing our newly generated custom hero!
     dressCode: 'Strict Black-Tie & Regal Glamour',
     dressCodeDescription: 'Gentlemen in classic black tuxedos or elegant dark traditional attire. Ladies in floor-length evening gowns. The color theme is Ivory, Warm Gold, and soft Champagne.'
@@ -223,19 +223,19 @@ export const faqItems: FAQItem[] = [
   {
     id: 'f2',
     question: 'Are there travel recommendations for international guests?',
-    answer: 'Yes! International guests should fly into Douala International Airport (DLA) or Yaoundé Nsimalen International Airport (NSI). We have blocked hotel rooms with special rates at the Hilton Yaoundé and the Pullman Douala Rabingha. Shuttle services will be provided for guests between venues. Please secure your Cameroonian tourist visa and yellow fever vaccination card at least 1 month prior to departure.',
+    answer: 'Yes! International guests should fly into Douala International Airport (DLA) — the closest gateway to both Baham (West Region) and Nkongsamba (Littoral Region). Shuttle services will be provided for guests between venues. Please secure your Cameroonian tourist visa and yellow fever vaccination card at least 1 month prior to departure.',
     category: 'Travel & Location'
   },
   {
     id: 'f3',
     question: 'What is the dress code for each ceremony?',
-    answer: 'The Traditional Customary Wedding in Yaoundé is Traditional Elegance & Royal African prints (Toghu, Ndop, Kaba, or Dashiki). The White Wedding in Douala is high-fashion Black-Tie & Evening Glamour (Tuxedos for men, long elegant gowns for ladies) themed in Ivory, Champagne, and Gold.',
+    answer: 'The Traditional Customary Wedding in Baham is Traditional Elegance & Royal African prints (Toghu, Ndop, Kaba, or Dashiki). The Civil & Religious Wedding in Nkongsamba is high-fashion Black-Tie & Evening Glamour (Tuxedos for men, long elegant gowns for ladies) themed in Ivory, Champagne, and Gold.',
     category: 'Culture & Attire'
   },
   {
     id: 'f4',
     question: 'How and when should I RSVP?',
-    answer: 'Please complete the RSVP form on this website by November 1st, 2026. This allows our catering team in Yaoundé and Douala to accurately finalize the traditional Cameroonian menu courses and seating charts.',
+    answer: 'Please complete the RSVP form on this website by July 1st, 2026. This allows our catering team to accurately finalize the traditional Cameroonian menu courses and seating charts for both Baham and Nkongsamba.',
     category: 'RSVP & Access'
   }
 ];

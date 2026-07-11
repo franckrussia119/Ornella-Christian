@@ -2,6 +2,7 @@ import React from 'react';
 import { Calendar, Clock, MapPin, Shirt, Map } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import coupleImage from '../assets/images/christian_ornella_wedding_1783429710497.jpg';
 
 export default function CeremonyDetails() {
   const { language, t } = useLanguage();
@@ -16,13 +17,13 @@ export default function CeremonyDetails() {
       id: 'c1',
       badge: language === 'fr' ? 'La Coutume' : 'Customary',
       title: language === 'fr' ? 'Rites de Mariage Traditionnel (La Dotation)' : 'Traditional Marriage Rites (La Dotation)',
-      date: language === 'fr' ? 'Vendredi, 11 Décembre 2026' : 'Friday, December 11, 2026',
+      date: language === 'fr' ? 'Samedi, 8 Août 2026' : 'Saturday, August 8, 2026',
       time: '2:00 PM - 8:00 PM',
-      venueName: language === 'fr' ? 'La Résidence Familiale Mbanga' : 'The Mbanga Family Estate',
-      address: 'Quartier Bastos, Yaoundé, Cameroon',
+      venueName: language === 'fr' ? '{{Nom du lieu, à confirmer}}' : '{{Venue Name — to be confirmed}}',
+      address: 'Baham, West Region, Cameroon',
       description: language === 'fr' 
-        ? 'La cérémonie formelle du mariage coutumier traditionnel où nos deux familles s\'unissent selon les coutumes ancestrales du Cameroun. Elle sera rythmée par des rites coutumiers, des présentations de dots, des danses culturelles et un grand banquet de mets camerounais.'
-        : 'The formal traditional customary wedding ceremony where our two families unite according to traditional Cameroon customs. It will feature customary rites, negotiation presentations, tribal blessings, traditional music, and an exquisite Cameroonian buffet feast.',
+        ? 'La cérémonie formelle du mariage coutumier traditionnel où nos deux familles s\'unissent selon les coutumes ancestrales du Cameroun, au cœur du royaume bamiléké de Baham. Elle sera rythmée par des rites coutumiers, des présentations de dots, des danses culturelles et un grand banquet de mets camerounais.'
+        : 'The formal traditional customary wedding ceremony where our two families unite according to traditional Cameroon customs, held in the heart of the Bamileke chiefdom of Baham. It will feature customary rites, negotiation presentations, tribal blessings, traditional music, and an exquisite Cameroonian buffet feast.',
       dressCode: language === 'fr' ? 'Élégance Traditionnelle Royale Camerounaise' : 'Royal Cameroonian Traditional Elegance',
       dressCodeDescription: language === 'fr'
         ? 'Les invités sont chaleureusement encouragés à porter des tenues traditionnelles camerounaises. Des motifs colorés en Toghu (Nord-Ouest), Ndop (Ouest), Kaba Ngondo (Littoral) ou pagnes de qualité supérieure avec une touche d\'or sont vivement recommandés.'
@@ -31,14 +32,14 @@ export default function CeremonyDetails() {
     {
       id: 'c2',
       badge: language === 'fr' ? 'Le Sacrement' : 'Ecclesiastical',
-      title: language === 'fr' ? 'Mariage Blanc & Grande Réception' : 'The White Wedding Ceremony & Grand Reception',
-      date: language === 'fr' ? 'Samedi, 12 Décembre 2026' : 'Saturday, December 12, 2026',
+      title: language === 'fr' ? 'Mariage Civil, Religieux & Grande Réception' : 'The Civil & Religious Wedding & Grand Reception',
+      date: language === 'fr' ? 'Samedi, 15 Août 2026' : 'Saturday, August 15, 2026',
       time: '1:00 PM - 11:00 PM',
-      venueName: 'Cathédrale Saint-Pierre-et-Saint-Paul & Crystal Palace Gardens',
-      address: 'Boulevard de la Liberté, Douala, Cameroon',
+      venueName: language === 'fr' ? '{{Église / Salle de réception, à confirmer}}' : '{{Church / Reception Venue — to be confirmed}}',
+      address: 'Nkongsamba, Littoral Region, Cameroon',
       description: language === 'fr'
-        ? 'La bénédiction religieuse à la Cathédrale suivie de l\'échange des vœux et de la signature civile de notre union. Nous nous réunirons ensuite pour un banquet dînatoire somptueux, animé par des danses et de merveilleux moments de fête au Crystal Palace de Bonapriso.'
-        : 'The religious wedding blessing, exchange of vows, and official civil signing, followed by an opulent, elegant evening banquet reception with non-stop dancing, wedding toasts, and majestic celebrations at the Crystal Palace Gardens in Bonapriso.',
+        ? 'La bénédiction religieuse suivie de l\'échange des vœux et de la signature civile de notre union à Nkongsamba. Nous nous réunirons ensuite pour un banquet dînatoire somptueux, animé par des danses et de merveilleux moments de fête.'
+        : 'The religious wedding blessing, exchange of vows, and official civil signing of our union in Nkongsamba, followed by an opulent, elegant evening banquet reception with non-stop dancing, wedding toasts, and majestic celebrations.',
       dressCode: language === 'fr' ? 'Tenue de Soirée & Chic Impérial' : 'Strict Black-Tie & Regal Glamour',
       dressCodeDescription: language === 'fr'
         ? 'Messieurs en smoking classique ou costume traditionnel sombre raffiné. Mesdames en robe longue de soirée élégante. Le thème de couleur de la réception est Ivoire, Or Chaud et Champagne.'
@@ -76,7 +77,7 @@ export default function CeremonyDetails() {
                 <img
                   src={idx === 0 
                     ? 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80'
-                    : '/src/assets/images/christian_ornella_wedding_1783429710497.jpg'
+                    : coupleImage
                   }
                   alt={event.title}
                   className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"

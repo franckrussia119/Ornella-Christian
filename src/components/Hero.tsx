@@ -25,8 +25,8 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    // Target Date: December 11, 2026 at 2:00 PM (Start of traditional rites)
-    const targetDate = new Date('2026-12-11T14:00:00');
+    // Target Date: August 8, 2026 at 2:00 PM (Start of traditional rites in Baham)
+    const targetDate = new Date('2026-08-08T14:00:00');
 
     const updateTimer = () => {
       const now = new Date();
@@ -71,7 +71,7 @@ export default function Hero() {
         <motion.img
           key={slideIndex}
           src={heroSlides[slideIndex]}
-          alt="Christian and Ornella Wedding"
+          alt="De l'Ange and Joverlin Wedding"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -119,14 +119,14 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        {/* Main Title: Christian and Ornella */}
+        {/* Main Title: De l'Ange and Joverlin */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
           className="font-serif text-4xl sm:text-6xl md:text-8xl font-light text-ivory tracking-wide leading-none mb-4"
         >
-          Christian <span className="font-script text-4xl sm:text-5xl md:text-6xl text-gold lowercase">{t.heroAnd}</span> Ornella
+          De l'Ange <span className="font-script text-4xl sm:text-5xl md:text-6xl text-gold lowercase">{t.heroAnd}</span> Joverlin
         </motion.h1>
 
         {/* Location & Dates Details Bar */}
@@ -138,7 +138,7 @@ export default function Hero() {
         >
           <div className="flex items-center space-x-2">
             <Calendar className="h-4 w-4 text-gold" />
-            <span>{language === 'fr' ? '11 - 12 Décembre 2026' : 'December 11 - 12, 2026'}</span>
+            <span>{language === 'fr' ? '8 & 15 Août 2026' : 'August 8 & 15, 2026'}</span>
           </div>
           <div className="h-2 w-2 rounded-full bg-gold hidden sm:block" />
           <div className="flex items-center space-x-2">

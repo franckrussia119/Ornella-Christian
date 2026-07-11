@@ -61,11 +61,11 @@ export default function AdminDashboard({
     }
     const text = context === 'rsvp'
       ? (language === 'fr'
-          ? `Bonjour ${guestName}, nous confirmons la réception de votre RSVP pour le mariage de Christian & Ornella ! 💖`
-          : `Hello ${guestName}, we confirm receipt of your RSVP for Christian & Ornella's wedding! 💖`)
+          ? `Bonjour ${guestName}, nous confirmons la réception de votre RSVP pour le mariage de De l'Ange & Joverlin ! 💖`
+          : `Hello ${guestName}, we confirm receipt of your RSVP for De l'Ange & Joverlin's wedding! 💖`)
       : (language === 'fr'
-          ? `Bonjour ${guestName}, merci infiniment pour votre magnifique cadeau : "${itemTitle}" pour le mariage de Christian & Ornella ! 🎁`
-          : `Hello ${guestName}, thank you so much for your wonderful gift: "${itemTitle}" for Christian & Ornella's wedding! 🎁`);
+          ? `Bonjour ${guestName}, merci infiniment pour votre magnifique cadeau : "${itemTitle}" pour le mariage de De l'Ange & Joverlin ! 🎁`
+          : `Hello ${guestName}, thank you so much for your wonderful gift: "${itemTitle}" for De l'Ange & Joverlin's wedding! 🎁`);
     return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
   };
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -263,9 +263,9 @@ export default function AdminDashboard({
 
   const getAttendanceLabel = (val: typeof rsvps[0]['attendance']) => {
     switch (val) {
-      case 'both': return language === 'fr' ? 'Yaoundé & Douala' : 'Both Rites';
-      case 'dotation': return language === 'fr' ? 'Yaoundé Coutumier' : 'Yaoundé Dotation';
-      case 'white': return language === 'fr' ? 'Douala Mariage Blanc' : 'Douala White Wedding';
+      case 'both': return language === 'fr' ? 'Baham & Nkongsamba' : 'Both Rites';
+      case 'dotation': return language === 'fr' ? 'Baham Coutumier' : 'Baham Dotation';
+      case 'white': return language === 'fr' ? 'Nkongsamba Civil & Religieux' : 'Nkongsamba Civil & Religious';
       case 'declined': return language === 'fr' ? 'Décliné' : 'Declined';
     }
   };

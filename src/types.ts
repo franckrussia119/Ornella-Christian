@@ -1,5 +1,5 @@
 /**
- * Shared Type Definitions for Christian & Ornella's Cameroonian Wedding Website
+ * Shared Type Definitions for De l'Ange & Joverlin's Cameroonian Wedding Website
  */
 
 export interface StoryMilestone {

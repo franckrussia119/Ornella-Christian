@@ -93,9 +93,9 @@ export default function ContactSection() {
 
   const getAttendanceLabel = (val: typeof attendance) => {
     switch (val) {
-      case 'both': return t.rsvpTicketRegistered + ': ' + (language === 'fr' ? 'Yaoundé & Douala' : 'Traditional & White Wedding');
-      case 'dotation': return language === 'fr' ? 'Yaoundé uniquement (Dotation Coutumière)' : 'Yaoundé Customary Only';
-      case 'white': return language === 'fr' ? 'Douala uniquement (Mariage Blanc & Banquet)' : 'Douala White Wedding Only';
+      case 'both': return t.rsvpTicketRegistered + ': ' + (language === 'fr' ? 'Baham & Nkongsamba' : 'Traditional & Civil/Religious Wedding');
+      case 'dotation': return language === 'fr' ? 'Baham uniquement (Dotation Coutumière)' : 'Baham Customary Only';
+      case 'white': return language === 'fr' ? 'Nkongsamba uniquement (Mariage Civil & Religieux)' : 'Nkongsamba Civil & Religious Only';
       case 'declined': return language === 'fr' ? 'Absence confirmée (Vœux envoyés)' : 'Declined (Blessings Sent)';
     }
   };
@@ -177,7 +177,7 @@ export default function ContactSection() {
               </p>
               <div className="h-28 bg-charcoal/5 rounded-lg border border-charcoal/10 flex items-center justify-center font-sans text-[10px] font-bold text-gold uppercase tracking-widest bg-cover bg-center bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=600&q=80')]">
                 <div className="bg-charcoal/60 backdrop-blur-sm p-3 rounded text-center">
-                  <span>Yaoundé &bull; Douala</span>
+                  <span>Baham &bull; Nkongsamba</span>
                   <span className="block text-[8px] text-white/70 font-light mt-0.5">{t.rsvpRouteBadge}</span>
                 </div>
               </div>
@@ -287,9 +287,9 @@ export default function ContactSection() {
                       </label>
                       <div className="space-y-2">
                         {[
-                          { id: 'both', label: language === 'fr' ? 'Oui ! Je serai présent aux DEUX cérémonies (Yaoundé & Douala)' : 'Yes! I will attend BOTH Ceremonies (Yaoundé & Douala)' },
-                          { id: 'dotation', label: language === 'fr' ? 'Uniquement Yaoundé (La Dot - 11 déc)' : 'Yaoundé Only (Traditional Customary - Dec 11)' },
-                          { id: 'white', label: language === 'fr' ? 'Uniquement Douala (Mariage Blanc & Banquet - 12 déc)' : 'Douala Only (White Wedding & Reception - Dec 12)' },
+                          { id: 'both', label: language === 'fr' ? 'Oui ! Je serai présent aux DEUX cérémonies (Baham & Nkongsamba)' : 'Yes! I will attend BOTH Ceremonies (Baham & Nkongsamba)' },
+                          { id: 'dotation', label: language === 'fr' ? 'Uniquement Baham (La Dot - 8 août)' : 'Baham Only (Traditional Customary - Aug 8)' },
+                          { id: 'white', label: language === 'fr' ? 'Uniquement Nkongsamba (Mariage Civil & Religieux - 15 août)' : 'Nkongsamba Only (Civil & Religious Wedding - Aug 15)' },
                           { id: 'declined', label: language === 'fr' ? 'Je ne pourrai malheureusement pas être présent' : 'Regretfully, I cannot attend but wish to send prayers' },
                         ].map((item) => (
                           <label

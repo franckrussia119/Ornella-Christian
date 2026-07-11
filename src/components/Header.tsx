@@ -236,7 +236,7 @@ export default function Header({ onOpenAdmin }: HeaderProps) {
               </a>
             </nav>
             <div className="absolute bottom-12 flex flex-col items-center space-y-2">
-              <span className="font-script text-4xl text-gold">Christian & Ornella</span>
+              <span className="font-script text-4xl text-gold">De l'Ange & Joverlin</span>
               <span className="font-sans text-[9px] uppercase tracking-widest text-warm-gray">La Dotation & Wedding 2026</span>
             </div>
           </motion.div>

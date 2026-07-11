@@ -7,24 +7,24 @@ export default function GoogleMapsSection() {
 
   const mapsData = [
     {
-      city: 'Yaoundé',
-      title: language === 'fr' ? 'La Dotation Coutumière (Yaoundé)' : 'Traditional Customary (Yaoundé)',
-      venue: language === 'fr' ? 'Résidence de la Famille Mbanga' : 'The Mbanga Family Estate',
-      address: 'Quartier Bastos, Yaoundé, Cameroon',
-      coords: 'Yaoundé Bastos',
-      // Real standard responsive Google Maps search embed for Bastos Yaoundé
-      embedUrl: 'https://maps.google.com/maps?q=Bastos%20Yaounde%20Cameroon&t=&z=14&ie=UTF8&iwloc=&output=embed',
-      directionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=Bastos+Yaounde+Cameroon'
+      city: 'Baham',
+      title: language === 'fr' ? 'La Dotation Coutumière (Baham)' : 'Traditional Customary (Baham)',
+      venue: language === 'fr' ? '{{Nom du lieu, à confirmer}}' : '{{Venue Name — to be confirmed}}',
+      address: 'Baham, West Region, Cameroon',
+      coords: 'Baham Cameroon',
+      // Real standard responsive Google Maps search embed for Baham
+      embedUrl: 'https://maps.google.com/maps?q=Baham%20Cameroon&t=&z=12&ie=UTF8&iwloc=&output=embed',
+      directionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=Baham+Cameroon'
     },
     {
-      city: 'Douala',
-      title: language === 'fr' ? 'Le Mariage Blanc & Banquet (Douala)' : 'The White Wedding & Banquet (Douala)',
-      venue: 'Cathédrale Saint-Pierre-et-Saint-Paul & Crystal Palace',
-      address: 'Boulevard de la Liberté, Bonapriso, Douala, Cameroon',
-      coords: 'Cathédrale Saint-Pierre-et-Saint-Paul Douala',
-      // Real standard responsive Google Maps search embed for Cathedrale Douala
-      embedUrl: 'https://maps.google.com/maps?q=Cathedrale%20Saint%20Pierre%20et%20Paul%20Douala&t=&z=14&ie=UTF8&iwloc=&output=embed',
-      directionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=Cathedrale+Saint+Pierre+et+Paul+Douala'
+      city: 'Nkongsamba',
+      title: language === 'fr' ? 'Le Mariage Civil & Religieux (Nkongsamba)' : 'The Civil & Religious Wedding (Nkongsamba)',
+      venue: language === 'fr' ? '{{Église / Salle de réception, à confirmer}}' : '{{Church / Reception Venue — to be confirmed}}',
+      address: 'Nkongsamba, Littoral Region, Cameroon',
+      coords: 'Nkongsamba Cameroon',
+      // Real standard responsive Google Maps search embed for Nkongsamba
+      embedUrl: 'https://maps.google.com/maps?q=Nkongsamba%20Cameroon&t=&z=13&ie=UTF8&iwloc=&output=embed',
+      directionsUrl: 'https://www.google.com/maps/dir/?api=1&destination=Nkongsamba+Cameroon'
     }
   ];
 
@@ -45,8 +45,8 @@ export default function GoogleMapsSection() {
           <div className="w-16 h-[1px] bg-gold mx-auto mb-6" />
           <p className="font-sans text-xs tracking-widest uppercase text-warm-gray leading-relaxed">
             {language === 'fr' 
-              ? 'Naviguez facilement vers nos deux lieux de réception à Yaoundé et Douala. Utilisez les cartes interactives ci-dessous pour lancer votre GPS.'
-              : 'Easily navigate to both of our celebration venues in Yaoundé and Douala. Use the interactive maps below or launch directly on your device GPS.'}
+              ? 'Naviguez facilement vers nos deux lieux de célébration à Baham et Nkongsamba. Utilisez les cartes interactives ci-dessous pour lancer votre GPS.'
+              : 'Easily navigate to both of our celebration venues in Baham and Nkongsamba. Use the interactive maps below or launch directly on your device GPS.'}
           </p>
         </div>
 

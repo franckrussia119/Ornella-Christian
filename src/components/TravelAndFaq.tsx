@@ -45,8 +45,8 @@ export default function TravelAndFaq() {
         ? 'Y a-t-il des recommandations de voyage pour les invités internationaux ?'
         : 'Are there travel recommendations for international guests?',
       answer: language === 'fr'
-        ? 'Absolument ! Les invités venant de l\'étranger doivent réserver un vol à destination de l\'Aéroport International de Yaoundé Nsimalen (NSI) pour la Dotation, ou de l\'Aéroport International de Douala (DLA) pour le mariage civil/religieux. Nous avons négocié des tarifs spéciaux au Hilton Yaoundé et au Pullman Douala. Veuillez vous assurer d\'obtenir votre visa de tourisme camerounais et votre carnet de vaccination fièvre jaune au moins un mois à l\'avance.'
-        : 'Yes! International guests should fly into Douala International Airport (DLA) or Yaoundé Nsimalen International Airport (NSI). We have blocked hotel rooms with special rates at the Hilton Yaoundé and the Pullman Douala Rabingha. Please secure your Cameroonian tourist visa and yellow fever vaccination card at least 1 month prior to departure.',
+        ? 'Absolument ! Les invités venant de l\'étranger doivent réserver un vol à destination de l\'Aéroport International de Douala (DLA), la porte d\'entrée la plus proche pour nos deux célébrations — comptez environ 4h de route vers Baham (région de l\'Ouest) et 2h30 vers Nkongsamba (région du Littoral). Veuillez vous assurer d\'obtenir votre visa de tourisme camerounais et votre carnet de vaccination fièvre jaune au moins un mois à l\'avance.'
+        : 'Yes! International guests should fly into Douala International Airport (DLA) — the closest gateway to both celebrations, roughly a 4-hour drive to Baham (West Region) and a 2.5-hour drive to Nkongsamba (Littoral Region). Please secure your Cameroonian tourist visa and yellow fever vaccination card at least 1 month prior to departure.',
       category: 'Travel & Location'
     },
     {
@@ -55,8 +55,8 @@ export default function TravelAndFaq() {
         ? 'Quel est le code vestimentaire pour chaque cérémonie ?'
         : 'What is the dress code for each ceremony?',
       answer: language === 'fr'
-        ? 'Pour le mariage coutumier (La Dot) à Yaoundé, la tenue traditionnelle d\'apparat est de mise (Toghu, Ndop, Kaba Ngondo ou imprimés africains avec des touches dorées). Pour le mariage blanc à Douala, nous exigeons un style très élégant : Smoking/Costume noir chic pour les hommes, et robe longue de soirée d\'une des couleurs du thème (Ivoire, Or, Champagne) pour les femmes.'
-        : 'The Traditional Customary Wedding in Yaoundé is Traditional Elegance & Royal African prints (Toghu, Ndop, Kaba, or Dashiki). The White Wedding in Douala is high-fashion Black-Tie & Evening Glamour (Tuxedos for men, long elegant gowns for ladies) themed in Ivory, Champagne, and Gold.',
+        ? 'Pour le mariage coutumier (La Dot) à Baham, la tenue traditionnelle d\'apparat est de mise (Toghu, Ndop, Kaba Ngondo ou imprimés africains avec des touches dorées). Pour le mariage civil et religieux à Nkongsamba, nous exigeons un style très élégant : Smoking/Costume noir chic pour les hommes, et robe longue de soirée d\'une des couleurs du thème (Ivoire, Or, Champagne) pour les femmes.'
+        : 'The Traditional Customary Wedding in Baham is Traditional Elegance & Royal African prints (Toghu, Ndop, Kaba, or Dashiki). The Civil & Religious Wedding in Nkongsamba is high-fashion Black-Tie & Evening Glamour (Tuxedos for men, long elegant gowns for ladies) themed in Ivory, Champagne, and Gold.',
       category: 'Culture & Attire'
     },
     {
@@ -65,8 +65,8 @@ export default function TravelAndFaq() {
         ? 'Comment et quand dois-je confirmer mon RSVP ?'
         : 'How and when should I RSVP?',
       answer: language === 'fr'
-        ? 'Veuillez confirmer votre présence en remplissant le formulaire de RSVP sur ce site web avant le 1er novembre 2026. Cela permettra à notre équipe de traiteurs de planifier avec précision les menus typiques et de dresser les tables de réception pour Yaoundé et Douala.'
-        : 'Please complete the RSVP form on this website by November 1st, 2026. This allows our catering team in Yaoundé and Douala to accurately finalize the traditional Cameroonian menu courses and seating charts.',
+        ? 'Veuillez confirmer votre présence en remplissant le formulaire de RSVP sur ce site web avant le 1er juillet 2026. Cela permettra à notre équipe de traiteurs de planifier avec précision les menus typiques et de dresser les tables de réception pour Baham et Nkongsamba.'
+        : 'Please complete the RSVP form on this website by July 1st, 2026. This allows our catering team to accurately finalize the traditional Cameroonian menu courses and seating charts for both Baham and Nkongsamba.',
       category: 'RSVP & Access'
     }
   ];
@@ -108,7 +108,7 @@ export default function TravelAndFaq() {
                 <li>&bull; <span className="font-bold">{language === 'fr' ? 'Santé :' : 'Health:'}</span> Le vaccin contre la fièvre jaune est obligatoire.</li>
               </ul>
             </div>
-            <span className="text-[9px] uppercase tracking-widest text-gold font-bold font-sans mt-6 block">NSI &bull; DLA &bull; {t.faqFlightAirportCode}</span>
+            <span className="text-[9px] uppercase tracking-widest text-gold font-bold font-sans mt-6 block">DLA &bull; {t.faqFlightAirportCode}</span>
           </div>
 
           {/* Card 2: Hotel Blockings */}
@@ -123,12 +123,12 @@ export default function TravelAndFaq() {
               </p>
               <div className="space-y-3 font-sans text-xs text-charcoal/90">
                 <div>
-                  <span className="font-bold block text-[10px] uppercase text-gold-dark tracking-wider">Yaoundé (10 - 11 déc):</span>
-                  <span>Hilton Hotel Yaoundé (Proche Bastos)</span>
+                  <span className="font-bold block text-[10px] uppercase text-gold-dark tracking-wider">{language === 'fr' ? 'Baham (6 - 8 août) :' : 'Baham (Aug 6 - 8):'}</span>
+                  <span>{language === 'fr' ? '{{Hôtel à Bafoussam/Bandjoun, à confirmer}}' : '{{Hotel in Bafoussam/Bandjoun — to be confirmed}}'}</span>
                 </div>
                 <div>
-                  <span className="font-bold block text-[10px] uppercase text-gold-dark tracking-wider">Douala (12 - 13 déc):</span>
-                  <span>Pullman Douala Rabingha / Krystal Palace</span>
+                  <span className="font-bold block text-[10px] uppercase text-gold-dark tracking-wider">{language === 'fr' ? 'Nkongsamba (14 - 15 août) :' : 'Nkongsamba (Aug 14 - 15):'}</span>
+                  <span>{language === 'fr' ? '{{Hôtel à Nkongsamba, à confirmer}}' : '{{Hotel in Nkongsamba — to be confirmed}}'}</span>
                 </div>
               </div>
             </div>
