@@ -3,15 +3,16 @@ import { RegistryItem, GuestBlessing } from '../types';
 import { Heart, Gift, Sparkles, Filter, Check, ShieldCheck, HelpCircle, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { submitGiftPledge } from '../api';
 
 export default function WeddingStore({
   onAddBlessing,
   registryItems,
-  onUpdateRegistry
+  onRegistryUpdated
 }: {
   onAddBlessing: (newBlessing: GuestBlessing) => void;
   registryItems: RegistryItem[];
-  onUpdateRegistry: (items: RegistryItem[]) => void;
+  onRegistryUpdated: (items: RegistryItem[]) => void;
 }) {
   const { language, t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -27,6 +28,7 @@ export default function WeddingStore({
   const [contributionAmount, setContributionAmount] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const categories = ['All', 'Honeymoon', 'Home Essentials', 'Experiences', 'Traditional & Culture'];
 
@@ -69,72 +71,41 @@ export default function WeddingStore({
         : 'Please fill out all required fields (Name, Email, WhatsApp, and Message).');
       return;
     }
+    if (!activeGiftItem) return;
 
     setIsSubmitting(true);
+    setSubmitError('');
 
-    // Simulate luxury API pledge processing
-    setTimeout(() => {
-      if (!activeGiftItem) return;
+    const amount = activeGiftItem.targetAmount
+      ? parseFloat(contributionAmount) || 0
+      : activeGiftItem.price;
 
-      const updatedItems = registryItems.map(item => {
-        if (item.id === activeGiftItem.id) {
-          if (item.targetAmount !== undefined && item.raisedAmount !== undefined) {
-            const addedVal = parseFloat(contributionAmount) || 0;
-            const newRaised = Math.min(item.targetAmount, item.raisedAmount + addedVal);
-            return {
-              ...item,
-              raisedAmount: newRaised,
-              reserved: newRaised >= item.targetAmount ? true : item.reserved,
-              reservedBy: newRaised >= item.targetAmount ? senderName : item.reservedBy
-            };
-          } else {
-            return {
-              ...item,
-              reserved: true,
-              reservedBy: senderName
-            };
-          }
-        }
-        return item;
-      });
-
-      onUpdateRegistry(updatedItems);
-
-      // Create guest pledge in localStorage to reflect in pledges tab
-      const savedPledges = localStorage.getItem('christian_ornella_pledges') || '[]';
-      try {
-        const parsed = JSON.parse(savedPledges);
-        parsed.push({
-          id: `pledge_${Date.now()}`,
-          senderName,
-          email,
-          phone, // Storing WhatsApp phone number
-          itemName: activeGiftItem.title,
-          amount: activeGiftItem.targetAmount ? parseFloat(contributionAmount) : activeGiftItem.price,
-          isContribution: !!activeGiftItem.targetAmount,
-          date: new Date().toISOString()
-        });
-        localStorage.setItem('christian_ornella_pledges', JSON.stringify(parsed));
-      } catch (err) {
+    submitGiftPledge(activeGiftItem.id, {
+      senderName,
+      email,
+      phone,
+      amount,
+      blessingMessage,
+      relationship,
+      cardDesign
+    })
+      .then(({ item, blessing }) => {
+        // Update just the one changed item within the current list
+        const updatedItems = registryItems.map((i) => (i.id === item.id ? item : i));
+        onRegistryUpdated(updatedItems);
+        onAddBlessing(blessing);
+        setIsSubmitting(false);
+        setShowSuccess(true);
+      })
+      .catch((err) => {
         console.error(err);
-      }
-
-      // Construct Guest Blessing Card
-      const newBlessing: GuestBlessing = {
-        id: 'user_b_' + Date.now(),
-        senderName,
-        email,
-        relationship,
-        message: blessingMessage,
-        date: new Date().toISOString(),
-        cardDesign,
-        pledgedItemTitle: activeGiftItem.title,
-      };
-
-      onAddBlessing(newBlessing);
-      setIsSubmitting(false);
-      setShowSuccess(true);
-    }, 1500);
+        setIsSubmitting(false);
+        setSubmitError(
+          language === 'fr'
+            ? "Une erreur s'est produite. Veuillez réessayer."
+            : 'Something went wrong. Please try again.'
+        );
+      });
   };
 
   // Helper formatting for currency
@@ -493,6 +464,10 @@ export default function WeddingStore({
                         className="w-full bg-ivory border border-cream rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-gold text-charcoal"
                       />
                     </div>
+
+                    {submitError && (
+                      <p className="text-red-500 text-xs text-center font-semibold">{submitError}</p>
+                    )}
 
                     {/* Actions button */}
                     <div className="pt-2 flex space-x-3">

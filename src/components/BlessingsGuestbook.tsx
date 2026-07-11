@@ -6,10 +6,16 @@ import { useLanguage } from '../context/LanguageContext';
 
 export default function BlessingsGuestbook({
   blessings,
-  onAddBlessing,
+  onSubmitBlessing,
 }: {
   blessings: GuestBlessing[];
-  onAddBlessing: (newBlessing: GuestBlessing) => void;
+  onSubmitBlessing: (payload: {
+    senderName: string;
+    email: string;
+    relationship: string;
+    message: string;
+    cardDesign: string;
+  }) => Promise<GuestBlessing>;
 }) {
   const { language, t } = useLanguage();
 
@@ -21,6 +27,7 @@ export default function BlessingsGuestbook({
   const [message, setMessage] = useState('');
   const [cardDesign, setCardDesign] = useState<'Gold-Filigree' | 'Rose-Petals' | 'Cameroon-Emerald' | 'Ivory-Classic'>('Gold-Filigree');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleSubmitGuestbook = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,27 +37,27 @@ export default function BlessingsGuestbook({
     }
 
     setIsSubmitting(true);
+    setSubmitError('');
 
-    setTimeout(() => {
-      const newBlessing: GuestBlessing = {
-        id: 'direct_b_' + Date.now(),
-        senderName,
-        email,
-        relationship,
-        message,
-        date: new Date().toISOString(),
-        cardDesign,
-      };
+    onSubmitBlessing({ senderName, email, relationship, message, cardDesign })
+      .then(() => {
+        setIsSubmitting(false);
+        setShowSignForm(false);
 
-      onAddBlessing(newBlessing);
-      setIsSubmitting(false);
-      setShowSignForm(false);
-      
-      // Reset form
-      setSenderName('');
-      setEmail('');
-      setMessage('');
-    }, 1200);
+        // Reset form
+        setSenderName('');
+        setEmail('');
+        setMessage('');
+      })
+      .catch((err) => {
+        console.error(err);
+        setIsSubmitting(false);
+        setSubmitError(
+          language === 'fr'
+            ? "Une erreur s'est produite. Veuillez réessayer."
+            : 'Something went wrong. Please try again.'
+        );
+      });
   };
 
   // Map design classes
@@ -241,6 +248,10 @@ export default function BlessingsGuestbook({
                       className="w-full bg-ivory border border-cream rounded-lg py-2.5 px-3.5 text-sm focus:outline-none focus:border-gold text-charcoal placeholder:text-warm-gray/50"
                     />
                   </div>
+
+                  {submitError && (
+                    <p className="text-red-500 text-xs text-center font-semibold">{submitError}</p>
+                  )}
 
                   {/* Submit direct */}
                   <button

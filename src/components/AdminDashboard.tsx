@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { RegistryItem, GuestBlessing } from '../types';
 import { useLanguage } from '../context/LanguageContext';
-import { Shield, Gift, ClipboardList, PlusCircle, Trash2, X, Check, Save, Table, UserCheck, Phone } from 'lucide-react';
+import { Shield, Gift, ClipboardList, PlusCircle, Trash2, X, Check, Save, Table, UserCheck, Phone, Pencil } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import {
+  getRsvps, updateRsvpTable, deleteRsvp,
+  getPledges, deletePledge,
+  addRegistryItem, updateRegistryItem, deleteRegistryItem
+} from '../api';
 
 interface RsvpRecord {
+  id: number;
   guestName: string;
   email: string;
   phone: string;
@@ -32,16 +38,14 @@ export default function AdminDashboard({
   isOpen,
   onClose,
   storeItems,
-  onAddStoreItem,
-  onUpdateStoreItem,
+  onRegistryUpdated,
   blessings,
   onDeleteBlessing,
 }: {
   isOpen: boolean;
   onClose: () => void;
   storeItems: RegistryItem[];
-  onAddStoreItem: (newItem: RegistryItem) => void;
-  onUpdateStoreItem: (updated: RegistryItem[]) => void;
+  onRegistryUpdated: (updated: RegistryItem[]) => void;
   blessings: GuestBlessing[];
   onDeleteBlessing: (id: string) => void;
 }) {
@@ -75,7 +79,7 @@ export default function AdminDashboard({
   const [pledges, setPledges] = useState<GiftPledgeRecord[]>([]);
   
   // Table edit states
-  const [editingRsvpIndex, setEditingRsvpIndex] = useState<number | null>(null);
+  const [editingRsvpId, setEditingRsvpId] = useState<number | null>(null);
   const [tableInput, setTableInput] = useState('');
 
   // Add store item form states
@@ -86,90 +90,72 @@ export default function AdminDashboard({
   const [newImg, setNewImg] = useState('');
   const [newAllowCustom, setNewAllowCustom] = useState(false);
   const [addSuccess, setAddSuccess] = useState(false);
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
   const [previousReadTimestamp, setPreviousReadTimestamp] = useState('0');
 
-  // Load RSVPs and Pledges on open
+  // Load RSVPs and Pledges once authenticated and open
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && isAuthenticated) {
       loadRsvps();
       loadPledges();
       const prev = localStorage.getItem('christian_ornella_previous_read_admin_timestamp') || '0';
       setPreviousReadTimestamp(prev);
     }
-  }, [isOpen]);
+  }, [isOpen, isAuthenticated]);
 
   const loadRsvps = () => {
-    const saved = localStorage.getItem('christian_ornella_rsvps');
-    if (saved) {
-      try {
-        setRsvps(JSON.parse(saved));
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
-      setRsvps([]);
-    }
+    getRsvps(password)
+      .then(setRsvps)
+      .catch((e) => console.error('Failed to load RSVPs', e));
   };
 
   const loadPledges = () => {
-    // We can extract pledges from blessings that have pledgedItemTitle, and also local pledge records
-    const saved = localStorage.getItem('christian_ornella_pledges');
-    if (saved) {
-      try {
-        setPledges(JSON.parse(saved));
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
-      // Reconstruct from preloaded blessings with gifts
-      const preseeded: GiftPledgeRecord[] = blessings
-        .filter(b => b.pledgedItemTitle)
-        .map((b, idx) => ({
-          id: `pledge_${idx}`,
-          senderName: b.senderName,
-          email: b.email,
-          itemName: b.pledgedItemTitle || '',
-          amount: b.pledgedItemTitle?.includes('Kribi') ? 650 : b.pledgedItemTitle?.includes('Flight') ? 400 : 450,
-          isContribution: b.pledgedItemTitle?.includes('Kribi') || b.pledgedItemTitle?.includes('Flight'),
-          date: b.date
-        }));
-      setPledges(preseeded);
-    }
+    getPledges(password)
+      .then(setPledges)
+      .catch((e) => console.error('Failed to load pledges', e));
   };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === '2026') {
-      setIsAuthenticated(true);
-      setAuthError('');
-    } else {
-      setAuthError(language === 'fr' ? 'Mot de passe incorrect (Indice: l\'année du mariage)' : 'Incorrect password (Hint: the wedding year)');
-    }
+    setAuthError('');
+    // Validate the entered password directly against the server by
+    // attempting an admin-only request — this way the client never needs
+    // to know or hardcode the real key, it just mirrors whatever ADMIN_KEY
+    // is set to on the backend.
+    getRsvps(password)
+      .then(() => {
+        setIsAuthenticated(true);
+      })
+      .catch(() => {
+        setAuthError(language === 'fr' ? 'Mot de passe incorrect' : 'Incorrect password');
+      });
   };
 
-  const handleSaveTable = (index: number) => {
-    const updated = [...rsvps];
-    updated[index].tableNumber = tableInput.trim();
-    setRsvps(updated);
-    localStorage.setItem('christian_ornella_rsvps', JSON.stringify(updated));
-    setEditingRsvpIndex(null);
-    setTableInput('');
+  const handleSaveTable = (id: number) => {
+    updateRsvpTable(id, tableInput.trim(), password)
+      .then(() => {
+        setRsvps((prev) => prev.map((r) => (r.id === id ? { ...r, tableNumber: tableInput.trim() } : r)));
+        setEditingRsvpId(null);
+        setTableInput('');
+      })
+      .catch((e) => console.error('Failed to save table', e));
   };
 
-  const handleDeleteRsvp = (index: number) => {
+  const handleDeleteRsvp = (id: number) => {
     if (window.confirm(language === 'fr' ? 'Voulez-vous vraiment supprimer ce RSVP ?' : 'Are you sure you want to delete this RSVP?')) {
-      const updated = rsvps.filter((_, idx) => idx !== index);
-      setRsvps(updated);
-      localStorage.setItem('christian_ornella_rsvps', JSON.stringify(updated));
+      deleteRsvp(id, password)
+        .then(() => setRsvps((prev) => prev.filter((r) => r.id !== id)))
+        .catch((e) => console.error('Failed to delete RSVP', e));
     }
   };
 
   const handleDeletePledge = (id: string) => {
     if (window.confirm(language === 'fr' ? 'Voulez-vous vraiment supprimer cette promesse de cadeau ?' : 'Are you sure you want to delete this gift pledge?')) {
-      const updated = pledges.filter(p => p.id !== id);
-      setPledges(updated);
-      localStorage.setItem('christian_ornella_pledges', JSON.stringify(updated));
+      deletePledge(id, password)
+        .then(() => setPledges((prev) => prev.filter((p) => p.id !== id)))
+        .catch((e) => console.error('Failed to delete pledge', e));
     }
   };
 
@@ -189,20 +175,50 @@ export default function AdminDashboard({
 
     const imageUrl = newImg.trim() || defaultImages[newCategory];
 
-    const newItem: RegistryItem = {
-      id: `custom_item_${Date.now()}`,
-      title: newTitle,
-      category: newCategory,
-      description: newDesc,
-      price: priceNum,
-      imageUrl,
-      reserved: false,
-      allowCustomContribution: newAllowCustom,
-      ...(newAllowCustom ? { targetAmount: priceNum, raisedAmount: 0 } : {})
-    };
-
-    onAddStoreItem(newItem);
-    setAddSuccess(true);
+    if (editingItemId) {
+      // ---- Update existing item ----
+      const existingItem = storeItems.find((i) => i.id === editingItemId);
+      const updatedItem: RegistryItem = {
+        ...(existingItem as RegistryItem),
+        title: newTitle,
+        category: newCategory,
+        description: newDesc,
+        price: priceNum,
+        imageUrl,
+        allowCustomContribution: newAllowCustom,
+        ...(newAllowCustom
+          ? { targetAmount: priceNum, raisedAmount: existingItem?.raisedAmount || 0 }
+          : { targetAmount: undefined, raisedAmount: undefined }),
+      };
+      updateRegistryItem(editingItemId, updatedItem, password)
+        .then((updatedList) => {
+          onRegistryUpdated(updatedList);
+          setUpdateSuccess(true);
+          setEditingItemId(null);
+          setTimeout(() => setUpdateSuccess(false), 3000);
+        })
+        .catch((e) => console.error('Failed to update gift item', e));
+    } else {
+      // ---- Add new item ----
+      const newItem: RegistryItem = {
+        id: `custom_item_${Date.now()}`,
+        title: newTitle,
+        category: newCategory,
+        description: newDesc,
+        price: priceNum,
+        imageUrl,
+        reserved: false,
+        allowCustomContribution: newAllowCustom,
+        ...(newAllowCustom ? { targetAmount: priceNum, raisedAmount: 0 } : {})
+      };
+      addRegistryItem(newItem, password)
+        .then((updatedList) => {
+          onRegistryUpdated(updatedList);
+          setAddSuccess(true);
+          setTimeout(() => setAddSuccess(false), 3000);
+        })
+        .catch((e) => console.error('Failed to add gift item', e));
+    }
 
     // Reset Form
     setNewTitle('');
@@ -210,10 +226,39 @@ export default function AdminDashboard({
     setNewDesc('');
     setNewImg('');
     setNewAllowCustom(false);
+  };
 
-    setTimeout(() => {
-      setAddSuccess(false);
-    }, 3000);
+  const handleEditItemClick = (item: RegistryItem) => {
+    setEditingItemId(item.id);
+    setNewTitle(item.title);
+    setNewCategory(item.category as any);
+    setNewPrice(String(item.price));
+    setNewDesc(item.description);
+    setNewImg(item.imageUrl);
+    setNewAllowCustom(!!item.allowCustomContribution);
+    setActiveTab('addItem');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingItemId(null);
+    setNewTitle('');
+    setNewPrice('');
+    setNewDesc('');
+    setNewImg('');
+    setNewAllowCustom(false);
+  };
+
+  const handleDeleteItemClick = (id: string) => {
+    if (window.confirm(t.adminDeleteItemConfirm)) {
+      deleteRegistryItem(id, password)
+        .then((updatedList) => {
+          onRegistryUpdated(updatedList);
+          if (editingItemId === id) {
+            handleCancelEdit();
+          }
+        })
+        .catch((e) => console.error('Failed to delete gift item', e));
+    }
   };
 
   const getAttendanceLabel = (val: typeof rsvps[0]['attendance']) => {
@@ -356,10 +401,10 @@ export default function AdminDashboard({
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-cream/60">
-                            {rsvps.map((rsvp, idx) => {
+                            {rsvps.map((rsvp) => {
                               const isNew = rsvp.date && new Date(rsvp.date).getTime() > new Date(previousReadTimestamp).getTime();
                               return (
-                                <tr key={idx} className={`font-sans text-charcoal transition-all ${isNew ? 'bg-gold/10 hover:bg-gold/15' : 'hover:bg-cream/10'}`}>
+                                <tr key={rsvp.id} className={`font-sans text-charcoal transition-all ${isNew ? 'bg-gold/10 hover:bg-gold/15' : 'hover:bg-cream/10'}`}>
                                   <td className="py-3 px-4">
                                     <div className="flex items-center space-x-2">
                                       <span className="font-bold">{rsvp.guestName}</span>
@@ -390,7 +435,7 @@ export default function AdminDashboard({
                                 
                                 {/* Table assignment cell */}
                                 <td className="py-3 px-4">
-                                  {editingRsvpIndex === idx ? (
+                                  {editingRsvpId === rsvp.id ? (
                                     <div className="flex items-center space-x-1.5">
                                       <input
                                         type="text"
@@ -400,14 +445,14 @@ export default function AdminDashboard({
                                         className="bg-cream border border-gold/30 rounded px-2 py-1 text-xs w-28 text-charcoal focus:outline-none"
                                       />
                                       <button
-                                        onClick={() => handleSaveTable(idx)}
+                                        onClick={() => handleSaveTable(rsvp.id)}
                                         className="p-1 bg-emerald-600 text-white rounded hover:bg-emerald-700 cursor-pointer"
                                         title={language === 'fr' ? 'Sauvegarder' : 'Save'}
                                       >
                                         <Save className="h-3 w-3" />
                                       </button>
                                       <button
-                                        onClick={() => setEditingRsvpIndex(null)}
+                                        onClick={() => setEditingRsvpId(null)}
                                         className="p-1 bg-warm-gray text-white rounded hover:bg-charcoal cursor-pointer"
                                         title={language === 'fr' ? 'Annuler' : 'Cancel'}
                                       >
@@ -421,7 +466,7 @@ export default function AdminDashboard({
                                       </span>
                                       <button
                                         onClick={() => {
-                                          setEditingRsvpIndex(idx);
+                                          setEditingRsvpId(rsvp.id);
                                           setTableInput(rsvp.tableNumber || '');
                                         }}
                                         className="p-1 text-charcoal/40 hover:text-gold cursor-pointer"
@@ -447,7 +492,7 @@ export default function AdminDashboard({
                                       </a>
                                     )}
                                     <button
-                                      onClick={() => handleDeleteRsvp(idx)}
+                                      onClick={() => handleDeleteRsvp(rsvp.id)}
                                       className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors cursor-pointer"
                                       title={language === 'fr' ? 'Supprimer' : 'Delete'}
                                     >
@@ -554,8 +599,23 @@ export default function AdminDashboard({
                   >
                     <h3 className="font-serif text-lg text-charcoal font-semibold mb-6 flex items-center space-x-2">
                       <PlusCircle className="h-5 w-5 text-gold" />
-                      <span>{t.adminAddTitle}</span>
+                      <span>{editingItemId ? t.adminUpdateItemBtn : t.adminAddTitle}</span>
                     </h3>
+
+                    {editingItemId && (
+                      <div className="mb-5 flex items-center justify-between bg-gold/10 border border-gold/30 rounded-lg px-4 py-3">
+                        <span className="text-[11px] text-gold-dark font-semibold leading-snug">
+                          {t.adminEditingBanner}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={handleCancelEdit}
+                          className="ml-3 shrink-0 text-[10px] uppercase tracking-widest font-bold text-warm-gray hover:text-charcoal border border-cream px-3 py-1.5 rounded-lg cursor-pointer"
+                        >
+                          {t.adminCancelEditBtn}
+                        </button>
+                      </div>
+                    )}
 
                     <form onSubmit={handleAddGiftSubmit} className="space-y-4 font-sans text-xs text-charcoal">
                       {/* Item title */}
@@ -706,7 +766,7 @@ export default function AdminDashboard({
                         className="w-full py-3 bg-gold hover:bg-gold-dark text-charcoal text-xs uppercase tracking-widest font-bold rounded-lg transition-all flex items-center justify-center space-x-2 cursor-pointer shadow font-sans"
                       >
                         <PlusCircle className="h-4 w-4" />
-                        <span>{t.adminAddItemBtn}</span>
+                        <span>{editingItemId ? t.adminUpdateItemBtn : t.adminAddItemBtn}</span>
                       </button>
 
                       {addSuccess && (
@@ -714,7 +774,72 @@ export default function AdminDashboard({
                           {t.adminAddItemSuccess}
                         </p>
                       )}
+                      {updateSuccess && (
+                        <p className="text-emerald-600 font-bold text-center mt-2 animate-pulse text-xs">
+                          {t.adminUpdateItemSuccess}
+                        </p>
+                      )}
                     </form>
+
+                    {/* ---- Manage Existing Gift Items ---- */}
+                    <div className="mt-10 pt-8 border-t border-cream">
+                      <h3 className="font-serif text-lg text-charcoal font-semibold mb-5 flex items-center space-x-2">
+                        <Gift className="h-5 w-5 text-gold" />
+                        <span>{t.adminManageItemsTitle}</span>
+                      </h3>
+
+                      {storeItems.length === 0 ? (
+                        <p className="text-xs text-warm-gray font-sans">{t.adminManageItemsEmpty}</p>
+                      ) : (
+                        <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
+                          {storeItems.map((item) => (
+                            <div
+                              key={item.id}
+                              className="flex items-center gap-3 bg-cream/40 border border-cream rounded-xl p-3"
+                            >
+                              <img
+                                src={item.imageUrl}
+                                alt={item.title}
+                                className="w-14 h-14 rounded-lg object-cover border border-cream shrink-0"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <span className="font-serif text-sm text-charcoal font-semibold truncate">
+                                    {item.title}
+                                  </span>
+                                  {item.reserved && (
+                                    <span className="text-[9px] uppercase tracking-widest font-bold bg-charcoal text-ivory px-2 py-0.5 rounded shrink-0">
+                                      {t.adminReservedBadge}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-[10px] text-warm-gray font-sans uppercase tracking-wider mt-0.5">
+                                  {item.category} &bull; ${item.price}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2 shrink-0">
+                                <button
+                                  type="button"
+                                  onClick={() => handleEditItemClick(item)}
+                                  title={t.adminEditItemBtn}
+                                  className="p-2 rounded-lg border border-cream text-warm-gray hover:text-charcoal hover:border-gold transition-colors cursor-pointer"
+                                >
+                                  <Pencil className="h-3.5 w-3.5" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => handleDeleteItemClick(item.id)}
+                                  title={t.adminDeleteItemBtn}
+                                  className="p-2 rounded-lg border border-cream text-red-400 hover:text-red-600 hover:border-red-300 transition-colors cursor-pointer"
+                                >
+                                  <Trash2 className="h-3.5 w-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </motion.div>
                 )}
 

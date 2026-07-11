@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, MapPin, Heart, Loader2, CheckCircle2, ShieldCheck, Ticket, Search, Printer } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { submitRsvp, searchRsvp } from '../api';
 
 export default function ContactSection() {
   const { language, t } = useLanguage();
@@ -21,6 +22,7 @@ export default function ContactSection() {
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success'>('idle');
+  const [submitError, setSubmitError] = useState('');
 
   // Search State
   const [searchName, setSearchName] = useState('');
@@ -53,32 +55,22 @@ export default function ContactSection() {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
+    setSubmitError('');
 
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitStatus('success');
-      
-      // Persist RSVP locally
-      const savedRsvps = localStorage.getItem('christian_ornella_rsvps') || '[]';
-      try {
-        const parsed = JSON.parse(savedRsvps);
-        // Table number remains undefined until admin assigns it
-        parsed.push({
-          guestName,
-          email,
-          phone,
-          attendance,
-          guestCount,
-          dietary,
-          note,
-          date: new Date().toISOString(),
-          tableNumber: ''
-        });
-        localStorage.setItem('christian_ornella_rsvps', JSON.stringify(parsed));
-      } catch (err) {
+    submitRsvp({ guestName, email, phone, attendance, guestCount, dietary, note })
+      .then(() => {
+        setIsSubmitting(false);
+        setSubmitStatus('success');
+      })
+      .catch((err) => {
         console.error(err);
-      }
-    }, 1500);
+        setIsSubmitting(false);
+        setSubmitError(
+          language === 'fr'
+            ? "Une erreur s'est produite lors de l'envoi. Veuillez réessayer."
+            : 'Something went wrong submitting your RSVP. Please try again.'
+        );
+      });
   };
 
   const handleLookupSearch = (e: React.FormEvent) => {
@@ -86,20 +78,12 @@ export default function ContactSection() {
     setSearchAttempted(true);
     if (!searchName.trim()) return;
 
-    const savedRsvps = localStorage.getItem('christian_ornella_rsvps');
-    if (savedRsvps) {
-      try {
-        const parsed = JSON.parse(savedRsvps);
-        const match = parsed.find((r: any) => 
-          r.guestName.toLowerCase().includes(searchName.trim().toLowerCase())
-        );
-        setFoundRsvp(match || null);
-      } catch (err) {
+    searchRsvp(searchName.trim())
+      .then((match) => setFoundRsvp(match))
+      .catch((err) => {
         console.error(err);
-      }
-    } else {
-      setFoundRsvp(null);
-    }
+        setFoundRsvp(null);
+      });
   };
 
   const handlePrint = () => {
@@ -373,6 +357,10 @@ export default function ContactSection() {
                         className="w-full bg-ivory border border-cream rounded-lg py-2 px-3 text-sm focus:outline-none focus:border-gold text-charcoal placeholder:text-warm-gray/50"
                       />
                     </div>
+
+                    {submitError && (
+                      <p className="text-red-500 text-xs text-center font-semibold">{submitError}</p>
+                    )}
 
                     <button
                       type="submit"

@@ -163,6 +163,16 @@ export interface TranslationDict {
   adminAddItemAllowCustom: string;
   adminAddItemBtn: string;
   adminAddItemSuccess: string;
+  adminManageItemsTitle: string;
+  adminManageItemsEmpty: string;
+  adminEditItemBtn: string;
+  adminDeleteItemBtn: string;
+  adminDeleteItemConfirm: string;
+  adminUpdateItemBtn: string;
+  adminUpdateItemSuccess: string;
+  adminCancelEditBtn: string;
+  adminEditingBanner: string;
+  adminReservedBadge: string;
   adminPledgeFund: string;
   adminPledgeReserved: string;
 }
@@ -331,6 +341,16 @@ export const translations: Record<Language, TranslationDict> = {
     adminAddItemAllowCustom: 'Allow Custom Fractional Contribution (Enable Fund Progress Bar)',
     adminAddItemBtn: 'Publish Item to Storefront',
     adminAddItemSuccess: 'Successfully added to the Wedding Store!',
+    adminManageItemsTitle: 'Manage Existing Gift Items',
+    adminManageItemsEmpty: 'No gift items yet — add your first one above.',
+    adminEditItemBtn: 'Edit',
+    adminDeleteItemBtn: 'Delete',
+    adminDeleteItemConfirm: 'Are you sure you want to remove this gift from the registry? This cannot be undone.',
+    adminUpdateItemBtn: 'Save Changes',
+    adminUpdateItemSuccess: 'Gift item updated successfully!',
+    adminCancelEditBtn: 'Cancel Edit',
+    adminEditingBanner: 'Editing existing gift item — changes will update the live storefront.',
+    adminReservedBadge: 'Reserved',
     adminPledgeFund: 'Fund Contribution',
     adminPledgeReserved: 'Reserved Full Gift'
   },
@@ -497,6 +517,16 @@ export const translations: Record<Language, TranslationDict> = {
     adminAddItemAllowCustom: 'Activer la contribution libre fractionnée (affiche une barre de progression)',
     adminAddItemBtn: 'Publier dans la Boutique',
     adminAddItemSuccess: 'Article ajouté avec succès à la boutique de cadeaux !',
+    adminManageItemsTitle: 'Gérer les Cadeaux Existants',
+    adminManageItemsEmpty: 'Aucun cadeau pour le moment — ajoutez le premier ci-dessus.',
+    adminEditItemBtn: 'Modifier',
+    adminDeleteItemBtn: 'Supprimer',
+    adminDeleteItemConfirm: 'Voulez-vous vraiment supprimer ce cadeau de la liste ? Cette action est irréversible.',
+    adminUpdateItemBtn: 'Enregistrer les Modifications',
+    adminUpdateItemSuccess: 'Cadeau mis à jour avec succès !',
+    adminCancelEditBtn: 'Annuler la Modification',
+    adminEditingBanner: 'Modification d\'un cadeau existant — les changements seront visibles sur la boutique en direct.',
+    adminReservedBadge: 'Réservé',
     adminPledgeFund: 'Participation Cagnotte',
     adminPledgeReserved: 'Cadeau Réservé'
   }

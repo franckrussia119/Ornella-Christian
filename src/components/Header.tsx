@@ -56,36 +56,18 @@ export default function Header({ onOpenAdmin }: HeaderProps) {
 
   useEffect(() => {
     const checkUnread = () => {
-      const lastRead = localStorage.getItem('christian_ornella_last_read_admin_timestamp') || '0';
-      
-      let newRsvpsCount = 0;
-      const rsvpsRaw = localStorage.getItem('christian_ornella_rsvps');
-      if (rsvpsRaw) {
-        try {
-          const rsvpsParsed = JSON.parse(rsvpsRaw);
-          newRsvpsCount = rsvpsParsed.filter((r: any) => r.date && new Date(r.date).getTime() > new Date(lastRead).getTime()).length;
-        } catch (e) {}
-      }
-
-      let newPledgesCount = 0;
-      const pledgesRaw = localStorage.getItem('christian_ornella_pledges');
-      if (pledgesRaw) {
-        try {
-          const pledgesParsed = JSON.parse(pledgesRaw);
-          newPledgesCount = pledgesParsed.filter((p: any) => p.date && new Date(p.date).getTime() > new Date(lastRead).getTime()).length;
-        } catch (e) {}
-      }
-
-      setUnreadCount(newRsvpsCount + newPledgesCount);
+      const lastRead = localStorage.getItem('christian_ornella_last_read_admin_timestamp') || '1970-01-01T00:00:00.000Z';
+      fetch(`/api/stats?since=${encodeURIComponent(lastRead)}`)
+        .then((res) => res.json())
+        .then((data) => setUnreadCount((data.newRsvps || 0) + (data.newPledges || 0)))
+        .catch(() => {});
     };
 
     checkUnread();
-    
-    window.addEventListener('storage', checkUnread);
-    const interval = setInterval(checkUnread, 2000);
+
+    const interval = setInterval(checkUnread, 15000);
 
     return () => {
-      window.removeEventListener('storage', checkUnread);
       clearInterval(interval);
     };
   }, []);

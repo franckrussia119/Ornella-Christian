@@ -12,103 +12,63 @@ import AdminDashboard from './components/AdminDashboard';
 import Footer from './components/Footer';
 
 import { GuestBlessing, RegistryItem } from './types';
-import { initialBlessings, registryItems as dataRegistryItems } from './data';
+import { initialBlessings } from './data';
+import { getRegistry, getBlessings, addBlessingApi } from './api';
 
 export default function App() {
   const [blessings, setBlessings] = useState<GuestBlessing[]>([]);
   const [registryItems, setRegistryItems] = useState<RegistryItem[]>([]);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
 
-  // Load merged initial data and custom user blessings from localStorage
-  useEffect(() => {
-    const savedUserBlessings = localStorage.getItem('christian_ornella_user_blessings');
-    let parsedUserBlessings: GuestBlessing[] = [];
-    
-    if (savedUserBlessings) {
-      try {
-        parsedUserBlessings = JSON.parse(savedUserBlessings);
-      } catch (e) {
-        console.error('Failed to parse user blessings', e);
-      }
-    }
+  const loadBlessings = () => {
+    getBlessings()
+      .then((apiBlessings: GuestBlessing[]) => {
+        // Real guest blessings first (newest), then the curated starter set
+        setBlessings([...apiBlessings, ...initialBlessings]);
+      })
+      .catch((e) => {
+        console.error('Failed to load blessings', e);
+        setBlessings(initialBlessings);
+      });
+  };
 
-    // Combine: User custom blessings first (newest), followed by beautiful pre-seeded initials
-    setBlessings([...parsedUserBlessings, ...initialBlessings]);
+  const loadRegistry = () => {
+    getRegistry()
+      .then(setRegistryItems)
+      .catch((e) => console.error('Failed to load registry', e));
+  };
+
+  useEffect(() => {
+    loadBlessings();
+    loadRegistry();
   }, []);
 
-  // Load registry items state
-  useEffect(() => {
-    const savedRegistry = localStorage.getItem('christian_ornella_registry');
-    if (savedRegistry) {
-      try {
-        setRegistryItems(JSON.parse(savedRegistry));
-      } catch (e) {
-        setRegistryItems(dataRegistryItems);
-      }
-    } else {
-      setRegistryItems(dataRegistryItems);
-      localStorage.setItem('christian_ornella_registry', JSON.stringify(dataRegistryItems));
-    }
-  }, []);
-
+  // Called by both the gift-pledge flow (WeddingStore) and the standalone
+  // guestbook form (BlessingsGuestbook) once the API call has already
+  // succeeded server-side — this just updates what's shown on screen.
   const handleAddBlessing = (newBlessing: GuestBlessing) => {
-    // 1. Update localStorage of custom user blessings
-    const savedUserBlessings = localStorage.getItem('christian_ornella_user_blessings');
-    let parsedUserBlessings: GuestBlessing[] = [];
-    
-    if (savedUserBlessings) {
-      try {
-        parsedUserBlessings = JSON.parse(savedUserBlessings);
-      } catch (e) {
-        parsedUserBlessings = [];
-      }
-    }
-
-    const updatedUserBlessings = [newBlessing, ...parsedUserBlessings];
-    localStorage.setItem('christian_ornella_user_blessings', JSON.stringify(updatedUserBlessings));
-
-    // 2. Update reactive state of combined list
-    setBlessings([newBlessing, ...blessings]);
+    setBlessings((prev) => [newBlessing, ...prev]);
   };
 
-  const handleUpdateRegistry = (newItems: RegistryItem[]) => {
+  // Called by the standalone guestbook form — actually performs the API call.
+  const handleSubmitStandaloneBlessing = async (payload: {
+    senderName: string;
+    email: string;
+    relationship: string;
+    message: string;
+    cardDesign: string;
+  }) => {
+    const created = await addBlessingApi(payload);
+    handleAddBlessing(created);
+    return created;
+  };
+
+  const handleRegistryUpdated = (newItems: RegistryItem[]) => {
     setRegistryItems(newItems);
-    localStorage.setItem('christian_ornella_registry', JSON.stringify(newItems));
-  };
-
-  const handleAddStoreItem = (newItem: RegistryItem) => {
-    const updated = [...registryItems, newItem];
-    handleUpdateRegistry(updated);
   };
 
   const handleDeleteBlessing = (id: string) => {
-    // 1. Update reactive state
-    const updatedBlessings = blessings.filter(b => b.id !== id);
-    setBlessings(updatedBlessings);
-
-    // 2. Update custom user blessings stored in localStorage
-    const savedUserBlessings = localStorage.getItem('christian_ornella_user_blessings');
-    if (savedUserBlessings) {
-      try {
-        const parsed: GuestBlessing[] = JSON.parse(savedUserBlessings);
-        const filtered = parsed.filter(b => b.id !== id);
-        localStorage.setItem('christian_ornella_user_blessings', JSON.stringify(filtered));
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  };
-
-  // Keep registry state synchronized when admin panel modifies it
-  const handleRefreshRegistryFromStorage = () => {
-    const savedRegistry = localStorage.getItem('christian_ornella_registry');
-    if (savedRegistry) {
-      try {
-        setRegistryItems(JSON.parse(savedRegistry));
-      } catch (e) {
-        // Fallback
-      }
-    }
+    setBlessings((prev) => prev.filter((b) => b.id !== id));
   };
 
   return (
@@ -121,21 +81,21 @@ export default function App() {
         {/* Section 1: Hero Banner with Cameroon Countdown Timer */}
         <Hero />
 
-        {/* Section 2: Story Timeline of Christian & Ornella in Cameroon */}
+        {/* Section 2: Story Timeline */}
         <StoryTimeline />
 
-        {/* Section 3: Ceremony Details (Dotation in Yaoundé, White Wedding in Douala) */}
+        {/* Section 3: Ceremony Details */}
         <CeremonyDetails />
 
         {/* Section 4: Interactive Wedding Registry Boutique Storefront */}
         <WeddingStore
           onAddBlessing={handleAddBlessing}
           registryItems={registryItems}
-          onUpdateRegistry={handleUpdateRegistry}
+          onRegistryUpdated={handleRegistryUpdated}
         />
 
         {/* Section 5: Live Guest Blessings greeting cards Wall */}
-        <BlessingsGuestbook blessings={blessings} onAddBlessing={handleAddBlessing} />
+        <BlessingsGuestbook blessings={blessings} onSubmitBlessing={handleSubmitStandaloneBlessing} />
 
         {/* Section 6: Travel Advisories, Airport guides, and collapsed FAQs */}
         <TravelAndFaq />
@@ -154,13 +114,9 @@ export default function App() {
       {isAdminOpen && (
         <AdminDashboard
           isOpen={isAdminOpen}
-          onClose={() => {
-            setIsAdminOpen(false);
-            handleRefreshRegistryFromStorage(); // Refresh state if items were added/modified in admin
-          }}
+          onClose={() => setIsAdminOpen(false)}
           storeItems={registryItems}
-          onAddStoreItem={handleAddStoreItem}
-          onUpdateStoreItem={handleUpdateRegistry}
+          onRegistryUpdated={handleRegistryUpdated}
           blessings={blessings}
           onDeleteBlessing={handleDeleteBlessing}
         />
